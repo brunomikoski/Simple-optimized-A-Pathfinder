@@ -7,6 +7,13 @@ namespace BrunoMikoski.Camera
     {
         [SerializeField]
         private new UnityEngine.Camera camera;
+        public  UnityEngine.Camera Camera
+        {
+            get
+            {
+                return camera;
+            }
+        }
 
         [SerializeField]
         private float minimumHeight = 10;

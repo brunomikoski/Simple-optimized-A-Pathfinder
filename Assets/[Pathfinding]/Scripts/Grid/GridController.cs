@@ -16,7 +16,7 @@ namespace BrunoMikoski.Pahtfinding.Grid
         RIGHT = 2,
         DOWN = 3
     }
-    
+
     public sealed class GridController : MonoBehaviour
     {
         [SerializeField]
@@ -39,13 +39,6 @@ namespace BrunoMikoski.Pahtfinding.Grid
             get { return tileTypes; }
         }
 
-        private int totalTiles;
-        private int usableTiles;
-
-        public int UsableTiles
-        {
-            get { return usableTiles; }
-        }
 
         public int TilePosToIndex( int x, int y )
         {
@@ -95,9 +88,6 @@ namespace BrunoMikoski.Pahtfinding.Grid
         public void SetTileBlocked( int index, bool blocked )
         {
             SetTileType( index, blocked ? TileType.BLOCK : TileType.EMPTY );
-
-            if ( blocked )
-                usableTiles -= 1;
         }
 
         public void SetTileBlocked( int x, int y, bool blocked )
@@ -115,22 +105,11 @@ namespace BrunoMikoski.Pahtfinding.Grid
             return IsTileBlocked( TilePosToIndex( x, y ) );
         }
 
-        private void GenerateTiles()
+        public void GenerateTiles()
         {
             tileTypes = new TileType[gridSizeX * gridSizeY];
-
-            int x = 0, y = 0;
-            for ( int i = 0; i < tileTypes.Length; i++ )
-                IndexToTilePos( i, out x, out y );
-
-            totalTiles = gridSizeX * gridSizeY;
-            usableTiles = totalTiles;
         }
 
-        public void Populate()
-        {
-            GenerateTiles();
-        }
 
         public bool IsValidTilePosition( int targetPositionX, int targetPositionY )
         {
@@ -148,13 +127,15 @@ namespace BrunoMikoski.Pahtfinding.Grid
             return true;
         }
 
+        public bool IsValidTilePosition( Vector2Int targetPosition )
+        {
+            return IsValidTilePosition( targetPosition.x, targetPosition.y );
+        }
+
         public void Clear()
         {
             for ( int i = tileTypes.Length - 1; i >= 0; i-- )
-            {
-                TileType tileType = tileTypes[i];
                 SetTileType( i, TileType.EMPTY );
-            }
         }
     }
 }

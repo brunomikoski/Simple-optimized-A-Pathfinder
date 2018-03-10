@@ -15,5 +15,16 @@ namespace BrunoMikoski.Events
                     OnTileTypeChangedEvent( index, x, y, targetType );
             }
         }
+
+        public static class Interaction
+        {
+
+            public static Action<int, int> OnUserClickOnTilePositionEvent;
+            public static void DispatchOnUserClickOnTilePositionEvent( int targetX, int targetZ )
+            {
+                if ( OnUserClickOnTilePositionEvent != null )
+                    OnUserClickOnTilePositionEvent( targetX, targetZ );
+            }
+        }
     }
 }
