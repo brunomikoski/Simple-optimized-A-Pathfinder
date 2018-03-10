@@ -56,7 +56,6 @@ namespace BrunoMikoski.Pahtfinding.Visualization
 
                 if ( targetTileType == TileType.ROAD )
                 {
-                    //tileVisual.transform.localScale = new Vector3( 1, 0, 1 );
                     tileVisual.transform.localPosition =
                         new Vector3( tileVisual.transform.localPosition.x, -5, tileVisual.transform.localPosition.z );
                     tileVisual.transform.DOLocalMoveY( 0, 0.3f )

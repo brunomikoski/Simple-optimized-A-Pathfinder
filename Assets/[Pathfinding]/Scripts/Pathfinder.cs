@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System.Collections;
+using System.Collections.Generic;
 using System.Linq;
 using BrunoMikoski.Pahtfinding.Grid;
 using UnityEngine;
@@ -19,6 +20,7 @@ namespace BrunoMikoski.Pahtfinding
 
         public static List<Vector2Int> GetPath( Vector2Int from, Vector2Int to )
         {
+            Debug.Log( "From: " + from + " to: " + to );
             openList = new List<PathTile>();
             closedList = new List<PathTile>();
 
@@ -38,11 +40,13 @@ namespace BrunoMikoski.Pahtfinding
                     break;
                 }
 
-                PathTile currentTile = GetBestPathTile();
+                PathTile currentTile = GetBestPathTileFromOpenList();
                 AddToCloseList( currentTile );
 
                 if ( currentTile.TilePosition == finalPathTile.TilePosition )
+                {
                     keepSearching = false;
+                }
                 else
                 {
                     PathTile[] neighbourList = GetPathTileNeighbors( currentTile, finalPathTile );
@@ -56,7 +60,9 @@ namespace BrunoMikoski.Pahtfinding
 
                         PathTile pathTileFromOpenList = GetPathTileFromOpenList( neighbourPathTile, false );
                         if ( pathTileFromOpenList == null )
+                        {
                             AddToOpenList( neighbourPathTile );
+                        }
                         else
                         {
                             if ( neighbourPathTile.FromParentCost < pathTileFromOpenList.FromParentCost )
@@ -81,13 +87,13 @@ namespace BrunoMikoski.Pahtfinding
             return finalPath;
         }
 
-        private static PathTile GetPathTileFromOpenList( PathTile targetPathTile , bool remove = true)
+        private static PathTile GetPathTileFromOpenList( PathTile targetPathTile, bool remove = true )
         {
             foreach ( PathTile tile in openList )
             {
                 if ( tile.TilePosition == targetPathTile.TilePosition )
                 {
-                    if(remove)
+                    if ( remove )
                         openList.Remove( tile );
                     return tile;
                 }
@@ -96,42 +102,39 @@ namespace BrunoMikoski.Pahtfinding
             return null;
         }
 
-        private static PathTile[] GetPathTileNeighbors( PathTile currentTile, PathTile targetFinalPathTile )
+        private static PathTile[] GetPathTileNeighbors( PathTile targetPathTile, PathTile targetDestinationPathTile )
         {
             PathTile[] neighbors = new PathTile[4];
-            neighbors[0] = GetNeighborFromPathTile( currentTile, targetFinalPathTile, NeighborDirection.LEFT );
-            neighbors[1] = GetNeighborFromPathTile( currentTile, targetFinalPathTile, NeighborDirection.TOP );
-            neighbors[2] = GetNeighborFromPathTile( currentTile, targetFinalPathTile, NeighborDirection.RIGHT );
-            neighbors[3] = GetNeighborFromPathTile( currentTile, targetFinalPathTile, NeighborDirection.DOWN );
+            neighbors[0] = GetNeighborFromPathTile( targetPathTile, targetDestinationPathTile, NeighborDirection.LEFT );
+            neighbors[1] = GetNeighborFromPathTile( targetPathTile, targetDestinationPathTile, NeighborDirection.TOP );
+            neighbors[2] = GetNeighborFromPathTile( targetPathTile, targetDestinationPathTile, NeighborDirection.RIGHT );
+            neighbors[3] = GetNeighborFromPathTile( targetPathTile, targetDestinationPathTile, NeighborDirection.DOWN );
 
             return neighbors;
         }
 
-        private static PathTile GetNeighborFromPathTile( PathTile currentTile, PathTile targetFinalPathTile,
+        private static PathTile GetNeighborFromPathTile( PathTile targetPathTile, PathTile targetDestinationPathTile,
             NeighborDirection targetDirection )
         {
-            Vector2Int neighborPosition;
-
-            GetNeighbourInformation( currentTile, targetDirection, out neighborPosition );
+            Vector2Int neighborPosition = GetNeighbourPosition( targetPathTile, targetDirection);
             if ( !gridController.IsValidTilePosition( neighborPosition ) )
                 return null;
 
             PathTile neighborPathTile = new PathTile( neighborPosition );
 
-            neighborPathTile.SetFromParentCost( currentTile.FromParentCost +
-                                                CalculateDistance( currentTile,
+            neighborPathTile.SetFromParentCost( targetPathTile.FromParentCost +
+                                                CalculateDistance( targetPathTile,
                                                                    neighborPathTile ) );
             neighborPathTile.SetToDestinationCost( CalculateDistance( neighborPathTile,
-                                                                      targetFinalPathTile ) );
+                                                                      targetDestinationPathTile ) );
             neighborPathTile.SetTotalCost();
-            neighborPathTile.SetParent( currentTile );
+            neighborPathTile.SetParent( targetPathTile );
             return neighborPathTile;
         }
 
-        private static void GetNeighbourInformation( PathTile targetTile, NeighborDirection targetDirection,
-            out Vector2Int neighbourPosition )
+        private static Vector2Int GetNeighbourPosition( PathTile targetTile, NeighborDirection targetDirection)
         {
-            neighbourPosition = new Vector2Int();
+            Vector2Int neighbourPosition = new Vector2Int();
             switch ( targetDirection )
             {
                 case NeighborDirection.LEFT:
@@ -152,6 +155,8 @@ namespace BrunoMikoski.Pahtfinding
                     neighbourPosition.y = targetTile.TilePosition.y - 1;
                     break;
             }
+
+            return neighbourPosition;
         }
 
         private static void AddToCloseList( PathTile targetPathTile )
@@ -159,17 +164,17 @@ namespace BrunoMikoski.Pahtfinding
             closedList.Add( targetPathTile );
         }
 
-        private static PathTile GetBestPathTile()
+        private static PathTile GetBestPathTileFromOpenList()
         {
             float minimumDistance = float.MaxValue;
             PathTile bestPathTile = null;
             foreach ( PathTile pathTile in openList )
             {
-                if ( pathTile.TotalCost >= minimumDistance )
-                    continue;
-
-                minimumDistance = pathTile.TotalCost;
-                bestPathTile = pathTile;
+                if ( pathTile.TotalCost < minimumDistance )
+                {
+                    minimumDistance = pathTile.TotalCost;
+                    bestPathTile = pathTile;
+                }
             }
 
             openList.Remove( bestPathTile );
