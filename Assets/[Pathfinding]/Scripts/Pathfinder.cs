@@ -41,7 +41,7 @@ namespace BrunoMikoski.Pahtfinding
                 PathTile currentTile = GetBestPathTile();
                 AddToCloseList( currentTile );
 
-                if ( currentTile == finalPathTile )
+                if ( currentTile.TilePosition == finalPathTile.TilePosition )
                     keepSearching = false;
                 else
                 {
@@ -54,16 +54,16 @@ namespace BrunoMikoski.Pahtfinding
                         if ( closedList.Contains( neighbourPathTile ) )
                             continue;
 
-                        PathTile tileInOpenList = GetPathTileFromOpenList( neighbourPathTile );
-                        if ( tileInOpenList == null )
+                        PathTile pathTileFromOpenList = GetPathTileFromOpenList( neighbourPathTile, false );
+                        if ( pathTileFromOpenList == null )
                             AddToOpenList( neighbourPathTile );
                         else
                         {
-                            if ( neighbourPathTile.FromParentCost < tileInOpenList.FromParentCost )
+                            if ( neighbourPathTile.FromParentCost < pathTileFromOpenList.FromParentCost )
                             {
-                                tileInOpenList.SetFromParentCost( neighbourPathTile.DestinationCost );
-                                tileInOpenList.SetTotalCost();
-                                tileInOpenList.SetParent( currentTile );
+                                pathTileFromOpenList.SetFromParentCost( neighbourPathTile.DestinationCost );
+                                pathTileFromOpenList.SetTotalCost();
+                                pathTileFromOpenList.SetParent( currentTile );
                             }
                         }
                     }
@@ -81,12 +81,16 @@ namespace BrunoMikoski.Pahtfinding
             return finalPath;
         }
 
-        private static PathTile GetPathTileFromOpenList( PathTile pathTile )
+        private static PathTile GetPathTileFromOpenList( PathTile targetPathTile , bool remove = true)
         {
             foreach ( PathTile tile in openList )
             {
-                if ( tile.TilePosition == pathTile.TilePosition )
+                if ( tile.TilePosition == targetPathTile.TilePosition )
+                {
+                    if(remove)
+                        openList.Remove( tile );
                     return tile;
+                }
             }
 
             return null;
@@ -168,6 +172,7 @@ namespace BrunoMikoski.Pahtfinding
                 bestPathTile = pathTile;
             }
 
+            openList.Remove( bestPathTile );
             return bestPathTile;
         }
 

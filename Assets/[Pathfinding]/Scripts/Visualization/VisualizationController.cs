@@ -1,5 +1,7 @@
-﻿using BrunoMikoski.Events;
+﻿using System.Collections;
+using BrunoMikoski.Events;
 using BrunoMikoski.Pahtfinding.Grid;
+using DG.Tweening;
 using Pooling;
 using UnityEngine;
 
@@ -17,6 +19,9 @@ namespace BrunoMikoski.Pahtfinding.Visualization
         private GridController grid;
 
         private GameObject[] tilesGameObjects;
+
+        private int count;
+        private Coroutine clearCountRoutine;
 
         public void Initialize(GridController targetGrid)
         {
@@ -48,7 +53,32 @@ namespace BrunoMikoski.Pahtfinding.Visualization
                 GameObject tileVisual = SimplePool.Spawn(typesPrefabs[(int) targetTileType], transform);
                 tileVisual.transform.localPosition = new Vector3(targetX, 0, targetY);
                 tilesGameObjects[index] = tileVisual;
+
+                if ( targetTileType == TileType.ROAD )
+                {
+                    //tileVisual.transform.localScale = new Vector3( 1, 0, 1 );
+                    tileVisual.transform.localPosition =
+                        new Vector3( tileVisual.transform.localPosition.x, -5, tileVisual.transform.localPosition.z );
+                    tileVisual.transform.DOLocalMoveY( 0, 0.3f )
+                              .SetEase( Ease.OutBack )
+                              .SetDelay( count * 0.05f );
+                    count++;
+
+                    if ( clearCountRoutine != null )
+                    {
+                        StopCoroutine( clearCountRoutine );
+                        clearCountRoutine = null;
+                    }
+                        
+                    clearCountRoutine = StartCoroutine( ClearCountEnumerator() );
+                }
             }
+        }
+
+        private IEnumerator ClearCountEnumerator()
+        {
+            yield return new WaitForSeconds( 1 );
+            count = 0;
         }
 
         private void CreateTerrain()

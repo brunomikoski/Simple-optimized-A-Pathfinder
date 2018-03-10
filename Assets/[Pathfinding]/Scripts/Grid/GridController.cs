@@ -121,7 +121,7 @@ namespace BrunoMikoski.Pahtfinding.Grid
 
             int tilePosToIndex = TilePosToIndex( targetPositionX, targetPositionY );
 
-            if ( tileTypes[tilePosToIndex] != TileType.EMPTY )
+            if ( tileTypes[tilePosToIndex] == TileType.BLOCK)
                 return false;
 
             return true;
