@@ -69,7 +69,7 @@ namespace BrunoMikoski.Pahtfinding.Grid
             int y;
             IndexToTilePos( index, out x, out y );
 
-            Events.EventsDispatcher.Grid.DispatchOnTileTypeChangedEvent( x, y, type );
+            Events.EventsDispatcher.Grid.DispatchOnTileTypeChangedEvent( index, x, y, type );
         }
 
         public void SetTileType( int x, int y, TileType type )
@@ -146,6 +146,15 @@ namespace BrunoMikoski.Pahtfinding.Grid
                 return false;
 
             return true;
+        }
+
+        public void Clear()
+        {
+            for ( int i = tileTypes.Length - 1; i >= 0; i-- )
+            {
+                TileType tileType = tileTypes[i];
+                SetTileType( i, TileType.EMPTY );
+            }
         }
     }
 }

@@ -7,12 +7,12 @@ namespace BrunoMikoski.Events
     {
         public static class Grid
         {
-            public static Action<int, int, TileType> OnTileTypeChangedEvent;
+            public static Action<int, int, int, TileType> OnTileTypeChangedEvent;
 
-            public static void DispatchOnTileTypeChangedEvent( int x, int y, TileType targetType )
+            public static void DispatchOnTileTypeChangedEvent(int index, int x, int y, TileType targetType )
             {
                 if ( OnTileTypeChangedEvent != null )
-                    OnTileTypeChangedEvent( x, y, targetType );
+                    OnTileTypeChangedEvent( index, x, y, targetType );
             }
         }
     }

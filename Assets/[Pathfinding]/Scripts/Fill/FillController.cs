@@ -17,8 +17,19 @@ namespace BrunoMikoski.Pahtfinding.Fill
         [SerializeField]
         private int maximumRandomIndexOffset = 10;
 
+        [SerializeField]
+        private bool fillMap;
+
+        private GridController gridController;
+
+        private void Fill()
+        {
+            Fill( gridController );
+        }
+        
         public void Fill(GridController targetGrid)
         {
+            gridController = targetGrid;
             int x = 0;
             int y = 0;
 
@@ -32,6 +43,16 @@ namespace BrunoMikoski.Pahtfinding.Fill
                                                 ((float)(y+randomOffset) / targetGrid.GridSizeY) * mapScale);
 
                 targetGrid.SetTileBlocked(x, y, noise > mimumValueAsBlock);
+            }
+        }
+
+        private void Update()
+        {
+            if ( fillMap )
+            {
+                gridController.Clear();
+                Fill(  );
+                fillMap = false;
             }
         }
     }

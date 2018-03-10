@@ -16,8 +16,11 @@ namespace BrunoMikoski.Pahtfinding.Visualization
         private GameObject ground;
         private GridController grid;
 
+        private GameObject[] tilesGameObjects;
+
         public void Initialize(GridController targetGrid)
         {
+            tilesGameObjects = new GameObject[targetGrid.TileTypes.Length];
             grid = targetGrid;
             EventsDispatcher.Grid.OnTileTypeChangedEvent += OnTileTypeChanged;
             
@@ -30,10 +33,22 @@ namespace BrunoMikoski.Pahtfinding.Visualization
             EventsDispatcher.Grid.OnTileTypeChangedEvent -= OnTileTypeChanged;
         }
 
-        private void OnTileTypeChanged( int targetX, int targetY, TileType targetTileType )
+        private void OnTileTypeChanged( int index, int targetX, int targetY, TileType targetTileType )
         {
-            GameObject blockTile = SimplePool.Spawn(typesPrefabs[(int) targetTileType], transform);
-            blockTile.transform.localPosition = new Vector3(targetX, 0, targetY);
+            if ( targetTileType == TileType.EMPTY )
+            {
+                if ( tilesGameObjects[index] == null )
+                    return;
+                
+                SimplePool.Despawn( tilesGameObjects[index] );
+                tilesGameObjects[index] = null;
+            }
+            else
+            {
+                GameObject tileVisual = SimplePool.Spawn(typesPrefabs[(int) targetTileType], transform);
+                tileVisual.transform.localPosition = new Vector3(targetX, 0, targetY);
+                tilesGameObjects[index] = tileVisual;
+            }
         }
 
         private void CreateTerrain()
@@ -61,6 +76,8 @@ namespace BrunoMikoski.Pahtfinding.Visualization
 
                 GameObject blockTile = SimplePool.Spawn( typesPrefabs[(int) TileType.BLOCK], transform );
                 blockTile.transform.localPosition = new Vector3( x, 0, y );
+
+                tilesGameObjects[i] = blockTile;
             }
         }
      
