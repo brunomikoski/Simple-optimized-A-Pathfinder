@@ -15,6 +15,9 @@ namespace BrunoMikoski.Pahtfinding.Visualization
         [SerializeField]
         private GameObject[] typesPrefabs;
 
+        [SerializeField]
+        private bool createObjects = true;
+        
         private GameObject ground;
         private GridController grid;
 
@@ -22,7 +25,7 @@ namespace BrunoMikoski.Pahtfinding.Visualization
 
         private int count;
         private Coroutine clearCountRoutine;
-        private bool createObjects;
+        
 
         public void Initialize( GridController targetGrid )
         {
@@ -43,7 +46,7 @@ namespace BrunoMikoski.Pahtfinding.Visualization
         {
             if ( !createObjects )
                 return;
-
+            
             if ( targetTile.TileType == TileType.EMPTY )
             {
                 if ( tilesGameObjects[targetTile.Index] == null )
@@ -65,7 +68,8 @@ namespace BrunoMikoski.Pahtfinding.Visualization
                         new Vector3( tileVisual.transform.localPosition.x, -5, tileVisual.transform.localPosition.z );
                     tileVisual.transform.DOLocalMoveY( 0, 0.3f )
                               .SetEase( Ease.OutBack )
-                              .SetDelay( count * 0.05f );
+                              .SetDelay( count * 0.05f )
+                              .SetRecyclable( true );
                     count++;
 
                     if ( clearCountRoutine != null )
@@ -128,9 +132,9 @@ namespace BrunoMikoski.Pahtfinding.Visualization
             SimplePool.AddObjectsToPool( typesPrefabs[(int) TileType.BLOCK], maxBlocksAmount );
         }
 
-        public void ToggleVisualCreation( bool isOn )
+        public void ToggleObjectCreationg( bool shouldCreate )
         {
-            createObjects = isOn;
+            createObjects = shouldCreate;
         }
     }
 }

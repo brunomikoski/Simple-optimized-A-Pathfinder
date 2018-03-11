@@ -2,6 +2,7 @@
 using System.Linq;
 using BrunoMikoski.Pahtfinding.Grid;
 using UnityEngine;
+using UnityEngine.Profiling;
 
 namespace BrunoMikoski.Pahtfinding
 {

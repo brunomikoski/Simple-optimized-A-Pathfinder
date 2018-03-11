@@ -1,14 +1,10 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Diagnostics;
-using System.Runtime.Remoting.Metadata;
+﻿using System.Collections.Generic;
 using BrunoMikoski.Camera;
 using BrunoMikoski.Events;
 using BrunoMikoski.Pahtfinding.Fill;
 using BrunoMikoski.Pahtfinding.Grid;
 using BrunoMikoski.Pahtfinding.Visualization;
 using UnityEngine;
-using Debug = UnityEngine.Debug;
 
 namespace BrunoMikoski.Pahtfinding.Gameplay
 {
@@ -25,11 +21,15 @@ namespace BrunoMikoski.Pahtfinding.Gameplay
         [SerializeField]
         private InteractionController interactionController;
 
+        [SerializeField]
+        private bool printBiggestPath;
+
         private Vector2Int selectedTilePosition;
         private bool hasFirstNodeSelected = false;
 
         private void Awake()
         {
+            
             gridController.GenerateTiles();
             fillController.Fill( gridController );
             visualizationController.Initialize( gridController );
@@ -76,11 +76,23 @@ namespace BrunoMikoski.Pahtfinding.Gameplay
             hasFirstNodeSelected = false;
         }
         
-        
+
+        [ContextMenu("Print Biggest Path")]
         public void PrintBiggestPath()
         {
             OnUserClickOnTilePosition(0, 0);
             OnUserClickOnTilePosition(gridController.GridSizeX - 1, gridController.GridSizeY - 1);
+        }
+
+        private void Update()
+        {
+            if ( printBiggestPath )
+            {
+                printBiggestPath = false;
+                visualizationController.ToggleObjectCreationg( false );
+                PrintBiggestPath();
+                visualizationController.ToggleObjectCreationg( true );
+            }
         }
     }
 }
