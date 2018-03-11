@@ -14,7 +14,7 @@ namespace BrunoMikoski.Profiler
         public static void ProfileBiggestPath()
         {
             GameplayController gameplayController = Object.FindObjectOfType<GameplayController>();
-            ProfileAction( 10, () =>
+            ProfileAction( 100, () =>
             {
                 gameplayController.PrintBiggestPath();
             });
@@ -48,6 +48,9 @@ namespace BrunoMikoski.Profiler
 
         private static long GetAverage( List<long> allTicks )
         {
+            allTicks.Sort();
+            allTicks.RemoveAt( allTicks.Count - 1 );
+            allTicks.RemoveAt( 0 );
             long totalTime = 0;
             for ( int i = allTicks.Count - 1; i >= 0; i-- )
             {

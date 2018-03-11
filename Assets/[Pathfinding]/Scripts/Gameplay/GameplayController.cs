@@ -80,8 +80,11 @@ namespace BrunoMikoski.Pahtfinding.Gameplay
         [ContextMenu("Print Biggest Path")]
         public void PrintBiggestPath()
         {
+            visualizationController.ToggleObjectCreationg( false );
             OnUserClickOnTilePosition(0, 0);
             OnUserClickOnTilePosition(gridController.GridSizeX - 1, gridController.GridSizeY - 1);
+            visualizationController.ToggleObjectCreationg( true );
+
         }
 
         private void Update()

@@ -37,6 +37,7 @@ namespace BrunoMikoski.Pahtfinding
             while ( openList.Count > 0 )
             {
                 Tile currentTile = openList[0];
+                int currentTileIndex = 0;
                 for ( int i = 1; i < openList.Count; ++i )
                 {
                     if ( openList[i].FCost < currentTile.FCost ||
@@ -44,10 +45,11 @@ namespace BrunoMikoski.Pahtfinding
                          openList[i].HCost < currentTile.HCost )
                     {
                         currentTile = openList[i];
+                        currentTileIndex = i;
                     }
                 }
 
-                openList.Remove( currentTile );
+                openList.RemoveAt( currentTileIndex );
                 tileIndexToTileObjectOpen.Remove( currentTile.Index );
                 closedList.Add( currentTile );
 
