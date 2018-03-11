@@ -22,13 +22,14 @@ namespace BrunoMikoski.Pahtfinding.Visualization
 
         private int count;
         private Coroutine clearCountRoutine;
+        private bool createObjects;
 
-        public void Initialize(GridController targetGrid)
+        public void Initialize( GridController targetGrid )
         {
             tilesGameObjects = new GameObject[targetGrid.Tiles.Length];
             grid = targetGrid;
             EventsDispatcher.Grid.OnTileTypeChangedEvent += OnTileTypeChanged;
-            
+
             InitializeVisuals();
             CreateTerrain();
         }
@@ -40,18 +41,22 @@ namespace BrunoMikoski.Pahtfinding.Visualization
 
         private void OnTileTypeChanged( Tile targetTile )
         {
+            if ( !createObjects )
+                return;
+
             if ( targetTile.TileType == TileType.EMPTY )
             {
                 if ( tilesGameObjects[targetTile.Index] == null )
                     return;
-                
+
                 SimplePool.Despawn( tilesGameObjects[targetTile.Index] );
                 tilesGameObjects[targetTile.Index] = null;
             }
             else
             {
-                GameObject tileVisual = SimplePool.Spawn(typesPrefabs[(int) targetTile.TileType], transform);
-                tileVisual.transform.localPosition = new Vector3(targetTile.TilePosition.x, 0, targetTile.TilePosition.y);
+                GameObject tileVisual = SimplePool.Spawn( typesPrefabs[(int) targetTile.TileType], transform );
+                tileVisual.transform.localPosition =
+                    new Vector3( targetTile.TilePosition.x, 0, targetTile.TilePosition.y );
                 tilesGameObjects[targetTile.Index] = tileVisual;
 
                 if ( targetTile.TileType == TileType.ROAD )
@@ -68,7 +73,7 @@ namespace BrunoMikoski.Pahtfinding.Visualization
                         StopCoroutine( clearCountRoutine );
                         clearCountRoutine = null;
                     }
-                        
+
                     clearCountRoutine = StartCoroutine( ClearCountEnumerator() );
                 }
             }
@@ -82,17 +87,16 @@ namespace BrunoMikoski.Pahtfinding.Visualization
 
         private void CreateTerrain()
         {
-            ground = Instantiate(groundPrefab, Vector3.zero, Quaternion.identity);
-            ground.transform.SetParent(transform, true);
+            ground = Instantiate( groundPrefab, Vector3.zero, Quaternion.identity );
+            ground.transform.SetParent( transform, true );
 
-            Vector3 finalSize = new Vector3(grid.GridSizeX, 1, grid.GridSizeY);
+            Vector3 finalSize = new Vector3( grid.GridSizeX, 1, grid.GridSizeY );
             ground.transform.localScale = finalSize;
 
             Vector3 finalLocalPosition =
-                new Vector3(grid.GridSizeX * 0.5f - 0.5f, 0, grid.GridSizeY * 0.5f - 0.5f);
+                new Vector3( grid.GridSizeX * 0.5f - 0.5f, 0, grid.GridSizeY * 0.5f - 0.5f );
             ground.transform.localPosition = finalLocalPosition;
-            
-            
+
             for ( int i = 0; i < grid.Tiles.Length; i++ )
             {
                 Tile gridTile = grid.Tiles[i];
@@ -105,22 +109,28 @@ namespace BrunoMikoski.Pahtfinding.Visualization
                 tilesGameObjects[i] = blockTile;
             }
         }
-     
+
         private void InitializeVisuals()
         {
             int totalTiles = grid.Tiles.Length;
 
             int maxBlocksAmount = (int) (totalTiles * 0.3f);
             int maxTypesAmount = (int) (totalTiles * 0.3f);
-            for (int i = 0; i < typesPrefabs.Length; i++)
+            for ( int i = 0; i < typesPrefabs.Length; i++ )
             {
                 GameObject typesPrefab = typesPrefabs[i];
-                if (typesPrefab == null)
+                if ( typesPrefab == null )
                     continue;
 
-                SimplePool.AddObjectsToPool(typesPrefab, maxTypesAmount);
+                SimplePool.AddObjectsToPool( typesPrefab, maxTypesAmount );
             }
-            SimplePool.AddObjectsToPool(typesPrefabs[(int) TileType.BLOCK], maxBlocksAmount);
+
+            SimplePool.AddObjectsToPool( typesPrefabs[(int) TileType.BLOCK], maxBlocksAmount );
+        }
+
+        public void ToggleVisualCreation( bool isOn )
+        {
+            createObjects = isOn;
         }
     }
 }
