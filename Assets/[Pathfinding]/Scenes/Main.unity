@@ -299,6 +299,7 @@ MonoBehaviour:
   - {fileID: 0}
   - {fileID: 1067205700244482, guid: 45dfe2cec1786444484aed79d0225341, type: 2}
   - {fileID: 1322136627946730, guid: 56c30ff01dee4ac4aaf8101e5b51a212, type: 2}
+  createObjects: 1
 --- !u!4 &1367755762
 Transform:
   m_ObjectHideFlags: 0
@@ -344,6 +345,7 @@ MonoBehaviour:
   visualizationController: {fileID: 1367755761}
   cameraController: {fileID: 1009608836}
   interactionController: {fileID: 933092436}
+  printBiggestPath: 0
 --- !u!4 &1504557813
 Transform:
   m_ObjectHideFlags: 0

@@ -18,7 +18,7 @@ MonoBehaviour:
   showUnityEditorReport: 0
   logBehaviour: 2
   drawGizmos: 1
-  defaultRecyclable: 0
+  defaultRecyclable: 1
   defaultAutoPlay: 3
   defaultUpdateType: 0
   defaultTimeScaleIndependent: 0
