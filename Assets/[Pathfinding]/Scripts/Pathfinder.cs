@@ -11,6 +11,7 @@ namespace BrunoMikoski.Pahtfinding
         private static GridController gridController;
 
         private static List<Tile> openList = new List<Tile>();
+        private static Dictionary<int, Tile> tileIndexToTileObjectOpen = new Dictionary<int, Tile>();
         private static HashSet<Tile> closedList = new HashSet<Tile>();
 
         public static void Initialize( GridController targetGridController )
@@ -21,6 +22,7 @@ namespace BrunoMikoski.Pahtfinding
         public static List<Vector2Int> GetPath( Vector2Int from, Vector2Int to )
         {
             openList.Clear();
+            tileIndexToTileObjectOpen.Clear();
             closedList.Clear();
 
             int fromIndex = gridController.TilePosToIndex( from.x, from.y );
@@ -30,11 +32,12 @@ namespace BrunoMikoski.Pahtfinding
             Tile destinationTile = gridController.Tiles[toIndex];
 
             openList.Add( initialTile );
+            tileIndexToTileObjectOpen.Add( initialTile.Index, initialTile );
 
             while ( openList.Count > 0 )
             {
                 Tile currentTile = openList[0];
-                for ( int i = openList.Count - 1; i >= 1; --i )
+                for ( int i = 1; i < openList.Count; ++i )
                 {
                     if ( openList[i].FCost < currentTile.FCost ||
                          openList[i].FCost == currentTile.FCost &&
@@ -45,6 +48,7 @@ namespace BrunoMikoski.Pahtfinding
                 }
 
                 openList.Remove( currentTile );
+                tileIndexToTileObjectOpen.Remove( currentTile.Index );
                 closedList.Add( currentTile );
 
                 if ( currentTile == destinationTile )
@@ -52,9 +56,8 @@ namespace BrunoMikoski.Pahtfinding
 
                 Tile[] neighbours = GetPathTileNeighbors( currentTile );
 
-                for ( int i = neighbours.Length - 1; i >= 0; --i )
+                foreach ( Tile neighbourPathTile in neighbours )
                 {
-                    Tile neighbourPathTile = neighbours[i];
                     if ( neighbourPathTile == null )
                         continue;
 
@@ -62,7 +65,7 @@ namespace BrunoMikoski.Pahtfinding
                         continue;
 
                     float movementCostToNeighbour = currentTile.GCost + GetDistance( currentTile, neighbourPathTile );
-                    bool isAtOpenList = openList.Contains( neighbourPathTile );
+                    bool isAtOpenList = tileIndexToTileObjectOpen.ContainsKey( neighbourPathTile.Index );
                     if ( movementCostToNeighbour < neighbourPathTile.GCost || !isAtOpenList )
                     {
                         neighbourPathTile.SetGCost( movementCostToNeighbour );
@@ -70,7 +73,10 @@ namespace BrunoMikoski.Pahtfinding
                         neighbourPathTile.SetParent( currentTile );
 
                         if ( !isAtOpenList )
+                        {
                             openList.Add( neighbourPathTile );
+                            tileIndexToTileObjectOpen.Add( neighbourPathTile.Index, neighbourPathTile );
+                        }
                     }
                 }
             }
