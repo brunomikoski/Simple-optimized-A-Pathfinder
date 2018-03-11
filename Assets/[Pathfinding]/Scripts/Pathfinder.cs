@@ -12,7 +12,6 @@ namespace BrunoMikoski.Pahtfinding
         private static GridController gridController;
 
         private static FastPriorityQueue<Tile> openListPriorityQueue;
-        private static Dictionary<int, Tile> tileIndexToTileObjectOpen = new Dictionary<int, Tile>();
         private static HashSet<Tile> closedList = new HashSet<Tile>();
         private static Tile[] neighbors = new Tile[4];
 
@@ -32,12 +31,12 @@ namespace BrunoMikoski.Pahtfinding
             Tile destinationTile = gridController.Tiles[toIndex];
 
             openListPriorityQueue.Enqueue( initialTile, 0 );
-            tileIndexToTileObjectOpen.Add( initialTile.Index, initialTile );
 
+
+            Tile currentTile = null;
             while ( openListPriorityQueue.Count > 0 )
             {
-                Tile currentTile = openListPriorityQueue.Dequeue();
-                tileIndexToTileObjectOpen.Remove( currentTile.Index );
+                currentTile = openListPriorityQueue.Dequeue();
 
                 closedList.Add( currentTile );
 
@@ -55,8 +54,9 @@ namespace BrunoMikoski.Pahtfinding
                     if ( closedList.Contains( neighbourPathTile ) )
                         continue;
 
+                    bool isAtOpenList = openListPriorityQueue.Contains( neighbourPathTile );
+                    
                     float movementCostToNeighbour = currentTile.GCost + GetDistance( currentTile, neighbourPathTile );
-                    bool isAtOpenList = tileIndexToTileObjectOpen.ContainsKey( neighbourPathTile.Index );
                     if ( movementCostToNeighbour < neighbourPathTile.GCost || !isAtOpenList )
                     {
                         neighbourPathTile.SetGCost( movementCostToNeighbour );
@@ -67,24 +67,21 @@ namespace BrunoMikoski.Pahtfinding
                         {
                             openListPriorityQueue.Enqueue( neighbourPathTile,
                                                            neighbourPathTile.FCost + neighbourPathTile.HCost );
-                            tileIndexToTileObjectOpen.Add( neighbourPathTile.Index, neighbourPathTile );
                         }
                     }
                 }
             }
 
-            Tile tile = closedList.Last();
             List<Vector2Int> finalPath = new List<Vector2Int>();
-            while ( tile != initialTile )
+            while ( currentTile  != initialTile )
             {
-                finalPath.Add( new Vector2Int( tile.PositionX, tile.PositionY ) );
-                tile = tile.Parent;
+                finalPath.Add( new Vector2Int( currentTile.PositionX, currentTile.PositionY ) );
+                currentTile = currentTile.Parent;
             }
 
             finalPath.Reverse();
             
             openListPriorityQueue.Clear();
-            tileIndexToTileObjectOpen.Clear();
             closedList.Clear();
             return finalPath;
         }
