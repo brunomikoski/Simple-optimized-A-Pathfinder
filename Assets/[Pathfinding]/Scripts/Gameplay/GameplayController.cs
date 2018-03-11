@@ -62,8 +62,6 @@ namespace BrunoMikoski.Pahtfinding.Gameplay
             }
 
             List<Vector2Int> result = Pathfinder.GetPath( selectedTilePosition, clickPosition );
-            result.Reverse();
-            
             foreach ( Vector2Int vector2Int in result )
             {
                 gridController.SetTileType(vector2Int, TileType.ROAD);

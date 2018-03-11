@@ -10,24 +10,6 @@ namespace BrunoMikoski.Pahtfinding
             get { return parent; }
         }
 
-        private float destinationCost;
-        public float DestinationCost
-        {
-            get { return destinationCost; }
-        }
-
-        private float fromParentCost;
-        public float FromParentCost
-        {
-            get { return fromParentCost; }
-        }
-
-        private float totalCost;
-        public float TotalCost
-        {
-            get { return totalCost; }
-        }
-
         private Vector2Int tilePosition;
         public Vector2Int TilePosition
         {
@@ -37,6 +19,28 @@ namespace BrunoMikoski.Pahtfinding
             }
         }
 
+        private float gCost;
+        public float GCost
+        {
+            get { return gCost; }
+        }
+
+        private float hCost;
+        public float HCost
+        {
+            get
+            {
+                return hCost;
+            }
+        }
+
+        public float FCost
+        {
+            get
+            {
+                return gCost + hCost;
+            }
+        }
         private int[] neighboursPositionIndexes;
 
         public PathTile( Vector2Int targetPosition )
@@ -44,43 +48,24 @@ namespace BrunoMikoski.Pahtfinding
             SetTilePostion( targetPosition );
         }
 
-        public void SetToDestinationCost( float targetValue )
-        {
-            destinationCost = targetValue;
-        }
-
-        public void SetFromParentCost( float targetValue )
-        {
-            fromParentCost = targetValue;
-        }
-
-        public void SetTotalCost( float targetValue )
-        {
-            totalCost = targetValue;
-        }
-
         public void SetParent( PathTile targetTile )
         {
             parent = targetTile;
         }
 
-        public void SetTotalCost()
-        {
-            totalCost = FromParentCost + DestinationCost;
-        }
-
-        public void SetTilePostion( Vector2Int targetTilePosition )
+        private void SetTilePostion( Vector2Int targetTilePosition )
         {
             tilePosition = targetTilePosition;
         }
 
-        public void Clear()
+        public void SetGCost( float targetGCost )
         {
-            SetTilePostion( Vector2Int.zero );
-            SetParent( null );
-            SetFromParentCost( 0 );
-            SetToDestinationCost( 0 );
-            SetTotalCost( 0 );
+            gCost = targetGCost;
+        }
+
+        public void SetHCost( float targetHCost )
+        {
+            hCost = targetHCost;
         }
     }
 }
