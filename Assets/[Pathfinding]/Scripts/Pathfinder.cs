@@ -88,12 +88,10 @@ namespace BrunoMikoski.Pahtfinding
 
         private static float GetDistance( Tile targetFromTile, Tile targetToTile )
         {
-            float dstX = Mathf.Abs( targetFromTile.TilePosition.x - targetToTile.TilePosition.x );
-            float dstY = Mathf.Abs( targetFromTile.TilePosition.y - targetToTile.TilePosition.y );
-
-            if ( dstX > dstY )
-                return 14 * dstY + 10 * (dstX - dstY);
-            return 14 * dstX + 10 * (dstY - dstX);
+            return (targetFromTile.TilePosition.x - targetToTile.TilePosition.x) *
+                   (targetFromTile.TilePosition.x - targetToTile.TilePosition.x) +
+                   (targetFromTile.TilePosition.y - targetToTile.TilePosition.y) *
+                   (targetFromTile.TilePosition.y - targetToTile.TilePosition.y);
         }
 
         private static Tile[] GetPathTileNeighbors( Tile targetTile )
