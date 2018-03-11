@@ -13,6 +13,7 @@ namespace BrunoMikoski.Pahtfinding
         private static List<Tile> openList = new List<Tile>();
         private static Dictionary<int, Tile> tileIndexToTileObjectOpen = new Dictionary<int, Tile>();
         private static HashSet<Tile> closedList = new HashSet<Tile>();
+        private static Tile[] neighbors = new Tile[4];
 
         public static void Initialize( GridController targetGridController )
         {
@@ -56,9 +57,9 @@ namespace BrunoMikoski.Pahtfinding
                 if ( currentTile == destinationTile )
                     break;
 
-                Tile[] neighbours = GetPathTileNeighbors( currentTile );
+                UpdateNeighbors( currentTile );
 
-                foreach ( Tile neighbourPathTile in neighbours )
+                foreach ( Tile neighbourPathTile in neighbors )
                 {
                     if ( neighbourPathTile == null )
                         continue;
@@ -104,9 +105,8 @@ namespace BrunoMikoski.Pahtfinding
                    (targetFromTile.TilePosition.y - targetToTile.TilePosition.y);
         }
 
-        private static Tile[] GetPathTileNeighbors( Tile targetTile )
+        private static Tile[] UpdateNeighbors( Tile targetTile )
         {
-            Tile[] neighbors = new Tile[4];
             neighbors[0] = GetNeighborAtDirection( targetTile, NeighborDirection.LEFT );
             neighbors[1] = GetNeighborAtDirection( targetTile, NeighborDirection.TOP );
             neighbors[2] = GetNeighborAtDirection( targetTile, NeighborDirection.RIGHT );
