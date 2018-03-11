@@ -33,7 +33,7 @@ namespace BrunoMikoski.Pahtfinding
             while ( openList.Count > 0 )
             {
                 Tile currentTile = openList[0];
-                for ( int i = 1; i < openList.Count; i++ )
+                for ( int i = openList.Count - 1; i >= 1; i-- )
                 {
                     if ( openList[i].FCost < currentTile.FCost ||
                          openList[i].FCost == currentTile.FCost &&
@@ -51,22 +51,24 @@ namespace BrunoMikoski.Pahtfinding
 
                 Tile[] neighbours = GetPathTileNeighbors( currentTile );
 
-                foreach ( Tile neighbourPathTile in neighbours )
+                for ( int i = neighbours.Length - 1; i >= 0; i-- )
                 {
+                    Tile neighbourPathTile = neighbours[i];
                     if ( neighbourPathTile == null )
                         continue;
 
-                    if ( IsTilePostionAtList( neighbourPathTile ) )
+                    if ( closedList.Contains( neighbourPathTile ) )
                         continue;
 
                     float movementCostToNeighbour = currentTile.GCost + GetDistance( currentTile, neighbourPathTile );
-                    if ( movementCostToNeighbour < neighbourPathTile.GCost || !IsTilePositionAtOpenList( neighbourPathTile ) )
+                    bool isAtOpenList = openList.Contains( neighbourPathTile );
+                    if ( movementCostToNeighbour < neighbourPathTile.GCost || !isAtOpenList )
                     {
                         neighbourPathTile.SetGCost( movementCostToNeighbour );
                         neighbourPathTile.SetHCost( GetDistance( neighbourPathTile, destinationTile ) );
                         neighbourPathTile.SetParent( currentTile );
 
-                        if ( !IsTilePositionAtOpenList( neighbourPathTile ) )
+                        if ( !isAtOpenList )
                             openList.Add( neighbourPathTile );
                     }
                 }
@@ -84,26 +86,6 @@ namespace BrunoMikoski.Pahtfinding
             return finalPath;
         }
 
-        private static bool IsTilePostionAtList( Tile targetTile )
-        {
-            foreach ( Tile tile in closedList )
-            {
-                if ( tile == targetTile )
-                    return true;
-            }
-            return false;
-        }
-
-        private static bool IsTilePositionAtOpenList( Tile targetTile )
-        {
-            foreach ( Tile pathTile in openList )
-            {
-                if ( pathTile == targetTile )
-                    return true;
-            }
-
-            return false;
-        }
 
         private static float GetDistance( Tile targetFromTile, Tile targetToTile )
         {
