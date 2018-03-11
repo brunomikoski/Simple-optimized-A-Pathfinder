@@ -1,6 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
 using BrunoMikoski.Pahtfinding.Grid;
+using Priority_Queue;
 using UnityEngine;
 using UnityEngine.Profiling;
 
@@ -10,7 +11,7 @@ namespace BrunoMikoski.Pahtfinding
     {
         private static GridController gridController;
 
-        private static List<Tile> openList = new List<Tile>();
+        private static FastPriorityQueue<Tile> openListPriorityQueue;
         private static Dictionary<int, Tile> tileIndexToTileObjectOpen = new Dictionary<int, Tile>();
         private static HashSet<Tile> closedList = new HashSet<Tile>();
         private static Tile[] neighbors = new Tile[4];
@@ -18,12 +19,11 @@ namespace BrunoMikoski.Pahtfinding
         public static void Initialize( GridController targetGridController )
         {
             gridController = targetGridController;
+            openListPriorityQueue = new FastPriorityQueue<Tile>( gridController.GridSizeX * gridController.GridSizeY );
         }
 
         public static List<Vector2Int> GetPath( Vector2Int from, Vector2Int to )
         {
-            openList.Clear();
-            tileIndexToTileObjectOpen.Clear();
             closedList.Clear();
 
             int fromIndex = gridController.TilePosToIndex( from.x, from.y );
@@ -32,26 +32,14 @@ namespace BrunoMikoski.Pahtfinding
             Tile initialTile = gridController.Tiles[fromIndex];
             Tile destinationTile = gridController.Tiles[toIndex];
 
-            openList.Add( initialTile );
+            openListPriorityQueue.Enqueue( initialTile, 0 );
             tileIndexToTileObjectOpen.Add( initialTile.Index, initialTile );
 
-            while ( openList.Count > 0 )
+            while ( openListPriorityQueue.Count > 0 )
             {
-                Tile currentTile = openList[0];
-                int currentTileIndex = 0;
-                for ( int i = 1; i < openList.Count; ++i )
-                {
-                    if ( openList[i].FCost < currentTile.FCost ||
-                         openList[i].FCost == currentTile.FCost &&
-                         openList[i].HCost < currentTile.HCost )
-                    {
-                        currentTile = openList[i];
-                        currentTileIndex = i;
-                    }
-                }
-
-                openList.RemoveAt( currentTileIndex );
+                Tile currentTile = openListPriorityQueue.Dequeue();
                 tileIndexToTileObjectOpen.Remove( currentTile.Index );
+
                 closedList.Add( currentTile );
 
                 if ( currentTile == destinationTile )
@@ -77,7 +65,8 @@ namespace BrunoMikoski.Pahtfinding
 
                         if ( !isAtOpenList )
                         {
-                            openList.Add( neighbourPathTile );
+                            openListPriorityQueue.Enqueue( neighbourPathTile,
+                                                           neighbourPathTile.FCost + neighbourPathTile.HCost );
                             tileIndexToTileObjectOpen.Add( neighbourPathTile.Index, neighbourPathTile );
                         }
                     }
@@ -93,6 +82,9 @@ namespace BrunoMikoski.Pahtfinding
             }
 
             finalPath.Reverse();
+            
+            openListPriorityQueue.Clear();
+            tileIndexToTileObjectOpen.Clear();
             return finalPath;
         }
 

@@ -1,9 +1,10 @@
 ﻿using BrunoMikoski.Pahtfinding.Grid;
+using Priority_Queue;
 using UnityEngine;
 
 namespace BrunoMikoski.Pahtfinding
 {
-    public class Tile
+    public sealed class Tile : FastPriorityQueueNode
     {
         private Tile parent;
         public Tile Parent
