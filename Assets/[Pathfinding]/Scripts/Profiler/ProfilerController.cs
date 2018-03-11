@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Diagnostics;
 using BrunoMikoski.Pahtfinding.Gameplay;
+using BrunoMikoski.Pahtfinding.Visualization;
 using UnityEditor;
 using Object = UnityEngine.Object;
 
@@ -14,10 +15,13 @@ namespace BrunoMikoski.Profiler
         public static void ProfileBiggestPath()
         {
             GameplayController gameplayController = Object.FindObjectOfType<GameplayController>();
+            VisualizationController visualizationController = Object.FindObjectOfType<VisualizationController>();
+            visualizationController.ToggleVisualCreation( false );
             ProfileAction( 10, () =>
             {
                 gameplayController.PrintBiggestPath();
             });
+            visualizationController.ToggleVisualCreation( true );
         }
         
         public static void ProfileAction( int numberOfTimes, Action targetAction )
@@ -42,7 +46,9 @@ namespace BrunoMikoski.Profiler
                 allTicks.Add( stopwatch.ElapsedTicks );
             }
 
-            UnityEngine.Debug.Log( "Average Ticks: " + GetAverage( allTicks ) );
+            long average = GetAverage( allTicks );
+            UnityEngine.Debug.Log( "Average Ticks: " + average + " ms: " +
+                                   TimeSpan.FromTicks( average ).TotalMilliseconds );
         }
 
         private static long GetAverage( List<long> allTicks )
