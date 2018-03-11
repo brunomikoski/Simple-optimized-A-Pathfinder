@@ -24,7 +24,6 @@ namespace BrunoMikoski.Pahtfinding
 
         public static List<Vector2Int> GetPath( Vector2Int from, Vector2Int to )
         {
-            closedList.Clear();
 
             int fromIndex = gridController.TilePosToIndex( from.x, from.y );
             int toIndex = gridController.TilePosToIndex( to.x, to.y );
@@ -47,8 +46,9 @@ namespace BrunoMikoski.Pahtfinding
 
                 UpdateNeighbors( currentTile );
 
-                foreach ( Tile neighbourPathTile in neighbors )
+                for ( int i = neighbors.Length - 1; i >= 0; --i )
                 {
+                    Tile neighbourPathTile = neighbors[i];
                     if ( neighbourPathTile == null )
                         continue;
 
@@ -85,16 +85,21 @@ namespace BrunoMikoski.Pahtfinding
             
             openListPriorityQueue.Clear();
             tileIndexToTileObjectOpen.Clear();
+            closedList.Clear();
             return finalPath;
         }
 
 
         private static float GetDistance( Tile targetFromTile, Tile targetToTile )
         {
-            return (targetFromTile.PositionX - targetToTile.PositionY) *
-                   (targetFromTile.PositionX - targetToTile.PositionX) +
-                   (targetFromTile.PositionY - targetToTile.PositionY) *
-                   (targetFromTile.PositionY - targetToTile.PositionY);
+            int fromPositionX = targetFromTile.PositionX;
+            int toPositionX = targetToTile.PositionX;
+            int fromPositionY = targetFromTile.PositionY;
+            int toPositionY = targetToTile.PositionY;
+            return (fromPositionX - toPositionX) *
+                   (fromPositionX - toPositionX) +
+                   (fromPositionY - toPositionY) *
+                   (fromPositionY - toPositionY);
         }
 
         private static Tile[] UpdateNeighbors( Tile targetTile )
@@ -141,5 +146,6 @@ namespace BrunoMikoski.Pahtfinding
                     break;
             }
         }
+        
     }
 }
