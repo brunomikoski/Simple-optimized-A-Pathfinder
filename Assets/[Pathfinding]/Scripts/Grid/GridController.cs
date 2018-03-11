@@ -33,12 +33,14 @@ namespace BrunoMikoski.Pahtfinding.Grid
             get { return gridSizeY; }
         }
 
-        private TileType[] tileTypes;
-        public TileType[] TileTypes
+        private Tile[] tiles;
+        public Tile[] Tiles
         {
-            get { return tileTypes; }
+            get
+            {
+                return tiles;
+            }
         }
-
 
         public int TilePosToIndex( int x, int y )
         {
@@ -53,16 +55,7 @@ namespace BrunoMikoski.Pahtfinding.Grid
 
         public void SetTileType( int index, TileType type )
         {
-            if ( tileTypes[index] == type )
-                return;
-
-            tileTypes[index] = type;
-
-            int x;
-            int y;
-            IndexToTilePos( index, out x, out y );
-
-            Events.EventsDispatcher.Grid.DispatchOnTileTypeChangedEvent( index, x, y, type );
+            tiles[index].SetType( type );
         }
 
         public void SetTileType( int x, int y, TileType type )
@@ -77,7 +70,7 @@ namespace BrunoMikoski.Pahtfinding.Grid
 
         public TileType GetTileType( int index )
         {
-            return tileTypes[index];
+            return tiles[index].TileType;
         }
 
         public TileType GetTileType( int x, int y )
@@ -97,7 +90,7 @@ namespace BrunoMikoski.Pahtfinding.Grid
 
         public bool IsTileBlocked( int index )
         {
-            return tileTypes[index] == TileType.BLOCK;
+            return tiles[index].TileType == TileType.BLOCK;
         }
 
         public bool IsTileBlocked( int x, int y )
@@ -107,7 +100,14 @@ namespace BrunoMikoski.Pahtfinding.Grid
 
         public void GenerateTiles()
         {
-            tileTypes = new TileType[gridSizeX * gridSizeY];
+            tiles = new Tile[gridSizeX * gridSizeY];
+            for ( int i = tiles.Length - 1; i >= 0; i-- )
+            {
+                int positionX;
+                int positionY;
+                IndexToTilePos( i, out positionX, out positionY );
+                tiles[i] = new Tile( i, new Vector2Int(positionX, positionY) );
+            }
         }
 
 
@@ -121,7 +121,7 @@ namespace BrunoMikoski.Pahtfinding.Grid
 
             int tilePosToIndex = TilePosToIndex( targetPositionX, targetPositionY );
 
-            if ( tileTypes[tilePosToIndex] == TileType.BLOCK)
+            if ( tiles[tilePosToIndex].TileType == TileType.BLOCK)
                 return false;
 
             return true;
@@ -134,7 +134,7 @@ namespace BrunoMikoski.Pahtfinding.Grid
 
         public void Clear()
         {
-            for ( int i = tileTypes.Length - 1; i >= 0; i-- )
+            for ( int i = tiles.Length - 1; i >= 0; i-- )
                 SetTileType( i, TileType.EMPTY );
         }
     }

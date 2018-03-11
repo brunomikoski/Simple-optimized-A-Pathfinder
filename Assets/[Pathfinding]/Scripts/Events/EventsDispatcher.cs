@@ -1,4 +1,5 @@
 ﻿using System;
+using BrunoMikoski.Pahtfinding;
 using BrunoMikoski.Pahtfinding.Grid;
 
 namespace BrunoMikoski.Events
@@ -7,12 +8,13 @@ namespace BrunoMikoski.Events
     {
         public static class Grid
         {
-            public static Action<int, int, int, TileType> OnTileTypeChangedEvent;
+            public static Action<Tile> OnTileTypeChangedEvent;
 
-            public static void DispatchOnTileTypeChangedEvent(int index, int x, int y, TileType targetType )
+
+            public static void DispatchOnTileTypeChangedEvent( Tile targetTile )
             {
                 if ( OnTileTypeChangedEvent != null )
-                    OnTileTypeChangedEvent( index, x, y, targetType );
+                    OnTileTypeChangedEvent( targetTile );
             }
         }
 

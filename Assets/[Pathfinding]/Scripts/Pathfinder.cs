@@ -9,8 +9,8 @@ namespace BrunoMikoski.Pahtfinding
     {
         private static GridController gridController;
 
-        private static List<PathTile> openList = new List<PathTile>();
-        private static HashSet<PathTile> closedList = new HashSet<PathTile>();
+        private static List<Tile> openList = new List<Tile>();
+        private static HashSet<Tile> closedList = new HashSet<Tile>();
 
         public static void Initialize( GridController targetGridController )
         {
@@ -22,33 +22,36 @@ namespace BrunoMikoski.Pahtfinding
             openList.Clear();
             closedList.Clear();
 
-            PathTile initialPathTile = new PathTile( from );
-            PathTile destinationPathTile = new PathTile( to );
+            int fromIndex = gridController.TilePosToIndex( from.x, from.y );
+            int toIndex = gridController.TilePosToIndex( to.x, to.y );
 
-            openList.Add( initialPathTile );
+            Tile initialTile = gridController.Tiles[fromIndex];
+            Tile destinationTile = gridController.Tiles[toIndex];
+
+            openList.Add( initialTile );
 
             while ( openList.Count > 0 )
             {
-                PathTile currentPathTile = openList[0];
+                Tile currentTile = openList[0];
                 for ( int i = 1; i < openList.Count; i++ )
                 {
-                    if ( openList[i].FCost < currentPathTile.FCost ||
-                         openList[i].FCost == currentPathTile.FCost &&
-                         openList[i].HCost < currentPathTile.HCost )
+                    if ( openList[i].FCost < currentTile.FCost ||
+                         openList[i].FCost == currentTile.FCost &&
+                         openList[i].HCost < currentTile.HCost )
                     {
-                        currentPathTile = openList[i];
+                        currentTile = openList[i];
                     }
                 }
 
-                openList.Remove( currentPathTile );
-                closedList.Add( currentPathTile );
+                openList.Remove( currentTile );
+                closedList.Add( currentTile );
 
-                if ( currentPathTile.TilePosition == destinationPathTile.TilePosition )
+                if ( currentTile.TilePosition == destinationTile.TilePosition )
                     break;
 
-                PathTile[] neighbours = GetPathTileNeighbors( currentPathTile );
+                Tile[] neighbours = GetPathTileNeighbors( currentTile );
 
-                foreach ( PathTile neighbourPathTile in neighbours )
+                foreach ( Tile neighbourPathTile in neighbours )
                 {
                     if ( neighbourPathTile == null )
                         continue;
@@ -56,12 +59,12 @@ namespace BrunoMikoski.Pahtfinding
                     if ( IsTilePostionAtList( neighbourPathTile ) )
                         continue;
 
-                    float movementCostToNeighbour = currentPathTile.GCost + GetDistance( currentPathTile, neighbourPathTile );
+                    float movementCostToNeighbour = currentTile.GCost + GetDistance( currentTile, neighbourPathTile );
                     if ( movementCostToNeighbour < neighbourPathTile.GCost || !IsTilePositionAtOpenList( neighbourPathTile ) )
                     {
                         neighbourPathTile.SetGCost( movementCostToNeighbour );
-                        neighbourPathTile.SetHCost( GetDistance( neighbourPathTile, destinationPathTile ) );
-                        neighbourPathTile.SetParent( currentPathTile );
+                        neighbourPathTile.SetHCost( GetDistance( neighbourPathTile, destinationTile ) );
+                        neighbourPathTile.SetParent( currentTile );
 
                         if ( !IsTilePositionAtOpenList( neighbourPathTile ) )
                             openList.Add( neighbourPathTile );
@@ -69,42 +72,41 @@ namespace BrunoMikoski.Pahtfinding
                 }
             }
 
-            PathTile pathTile = closedList.Last();
+            Tile tile = closedList.Last();
             List<Vector2Int> finalPath = new List<Vector2Int>();
-            while ( pathTile.TilePosition != initialPathTile.TilePosition )
+            while ( tile.TilePosition != initialTile.TilePosition )
             {
-                finalPath.Add( pathTile.TilePosition );
-                pathTile = pathTile.Parent;
+                finalPath.Add( tile.TilePosition );
+                tile = tile.Parent;
             }
 
             finalPath.Reverse();
-            Debug.Break();
             return finalPath;
         }
 
-        private static bool IsTilePostionAtList( PathTile targetPathTile )
+        private static bool IsTilePostionAtList( Tile targetTile )
         {
-            foreach ( PathTile pathTile in closedList )
+            foreach ( Tile pathTile in closedList )
             {
-                if ( pathTile.TilePosition == targetPathTile.TilePosition )
+                if ( pathTile.TilePosition == targetTile.TilePosition )
                     return true;
             }
 
             return false;
         }
 
-        private static bool IsTilePositionAtOpenList( PathTile targetPathTile )
+        private static bool IsTilePositionAtOpenList( Tile targetTile )
         {
-            foreach ( PathTile pathTile in openList )
+            foreach ( Tile pathTile in openList )
             {
-                if ( pathTile.TilePosition == targetPathTile.TilePosition )
+                if ( pathTile.TilePosition == targetTile.TilePosition )
                     return true;
             }
 
             return false;
         }
 
-        private static float GetDistance( PathTile targetFromTile, PathTile targetToTile )
+        private static float GetDistance( Tile targetFromTile, Tile targetToTile )
         {
             float dstX = Mathf.Abs( targetFromTile.TilePosition.x - targetToTile.TilePosition.x );
             float dstY = Mathf.Abs( targetFromTile.TilePosition.y - targetToTile.TilePosition.y );
@@ -114,28 +116,29 @@ namespace BrunoMikoski.Pahtfinding
             return 14 * dstX + 10 * (dstY - dstX);
         }
 
-        private static PathTile[] GetPathTileNeighbors( PathTile targetPathTile )
+        private static Tile[] GetPathTileNeighbors( Tile targetTile )
         {
-            PathTile[] neighbors = new PathTile[4];
-            neighbors[0] = GetNeighborAtDirection( targetPathTile, NeighborDirection.LEFT );
-            neighbors[1] = GetNeighborAtDirection( targetPathTile, NeighborDirection.TOP );
-            neighbors[2] = GetNeighborAtDirection( targetPathTile, NeighborDirection.RIGHT );
-            neighbors[3] = GetNeighborAtDirection( targetPathTile, NeighborDirection.DOWN );
+            Tile[] neighbors = new Tile[4];
+            neighbors[0] = GetNeighborAtDirection( targetTile, NeighborDirection.LEFT );
+            neighbors[1] = GetNeighborAtDirection( targetTile, NeighborDirection.TOP );
+            neighbors[2] = GetNeighborAtDirection( targetTile, NeighborDirection.RIGHT );
+            neighbors[3] = GetNeighborAtDirection( targetTile, NeighborDirection.DOWN );
 
             return neighbors;
         }
 
-        private static PathTile GetNeighborAtDirection( PathTile targetPathTile, NeighborDirection targetDirection )
+        private static Tile GetNeighborAtDirection( Tile targetTile, NeighborDirection targetDirection )
         {
-            Vector2Int neighborPosition = GetNeighbourPosition( targetPathTile, targetDirection );
+            Vector2Int neighborPosition = GetNeighbourPosition( targetTile, targetDirection );
             if ( !gridController.IsValidTilePosition( neighborPosition ) )
                 return null;
+            
+            int neighborIndex = gridController.TilePosToIndex( neighborPosition.x, neighborPosition.y );
 
-            PathTile neighborPathTile = new PathTile( neighborPosition );
-            return neighborPathTile;
+            return gridController.Tiles[neighborIndex];
         }
 
-        private static Vector2Int GetNeighbourPosition( PathTile targetTile, NeighborDirection targetDirection )
+        private static Vector2Int GetNeighbourPosition( Tile targetTile, NeighborDirection targetDirection )
         {
             Vector2Int neighbourPosition = targetTile.TilePosition;
             switch ( targetDirection )

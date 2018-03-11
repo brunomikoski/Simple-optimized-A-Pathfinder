@@ -1,11 +1,12 @@
-﻿using UnityEngine;
+﻿using BrunoMikoski.Pahtfinding.Grid;
+using UnityEngine;
 
 namespace BrunoMikoski.Pahtfinding
 {
-    public class PathTile
+    public class Tile
     {
-        private PathTile parent;
-        public PathTile Parent
+        private Tile parent;
+        public Tile Parent
         {
             get { return parent; }
         }
@@ -41,14 +42,32 @@ namespace BrunoMikoski.Pahtfinding
                 return gCost + hCost;
             }
         }
-        private int[] neighboursPositionIndexes;
 
-        public PathTile( Vector2Int targetPosition )
+        private TileType tileType;
+        public TileType TileType
         {
+            get
+            {
+                return tileType;
+            }
+        }
+
+        private int index;
+        public int Index
+        {
+            get
+            {
+                return index;
+            }
+        }
+
+        public Tile( int targetTileIndex, Vector2Int targetPosition )
+        {
+            index = targetTileIndex;
             SetTilePostion( targetPosition );
         }
 
-        public void SetParent( PathTile targetTile )
+        public void SetParent( Tile targetTile )
         {
             parent = targetTile;
         }
@@ -66,6 +85,15 @@ namespace BrunoMikoski.Pahtfinding
         public void SetHCost( float targetHCost )
         {
             hCost = targetHCost;
+        }
+
+        public void SetType( TileType targetType )
+        {
+            if(tileType == targetType)
+                return;
+            
+            tileType = targetType;
+            Events.EventsDispatcher.Grid.DispatchOnTileTypeChangedEvent( this);
         }
     }
 }

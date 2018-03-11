@@ -30,19 +30,19 @@ namespace BrunoMikoski.Pahtfinding.Fill
         public void Fill(GridController targetGrid)
         {
             gridController = targetGrid;
-            int x = 0;
-            int y = 0;
 
             int randomOffset = Random.Range(minimumRandomIndexOffset, maximumRandomIndexOffset);
 
-            for (int i = 0; i < targetGrid.TileTypes.Length; i++)
+            for (int i = 0; i < targetGrid.Tiles.Length; i++)
             {
-                targetGrid.IndexToTilePos(i, out x, out y);
-                
-                float noise = Mathf.PerlinNoise(((float)(x+randomOffset) / targetGrid.GridSizeX) * mapScale,
-                                                ((float)(y+randomOffset) / targetGrid.GridSizeY) * mapScale);
+                Tile tile = targetGrid.Tiles[i];
+                float noise = Mathf.PerlinNoise(((float)(tile.TilePosition.x+randomOffset) / targetGrid.GridSizeX) * mapScale,
+                                                ((float)(tile.TilePosition.y+randomOffset) / targetGrid.GridSizeY) * mapScale);
 
-                targetGrid.SetTileBlocked(x, y, noise > mimumValueAsBlock);
+                if ( noise > mimumValueAsBlock )
+                {
+                    tile.SetType( TileType.BLOCK );
+                }
             }
         }
 
