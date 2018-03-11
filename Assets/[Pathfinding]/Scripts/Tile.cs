@@ -12,12 +12,20 @@ namespace BrunoMikoski.Pahtfinding
             get { return parent; }
         }
 
-        private Vector2Int tilePosition;
-        public Vector2Int TilePosition
+        private int positionX;
+        public int PositionX
         {
             get
             {
-                return tilePosition;
+                return positionX;
+            }
+        }
+        private int positionY;
+        public int PositionY
+        {
+            get
+            {
+                return positionY;
             }
         }
 
@@ -62,10 +70,10 @@ namespace BrunoMikoski.Pahtfinding
             }
         }
 
-        public Tile( int targetTileIndex, Vector2Int targetPosition )
+        public Tile( int targetTileIndex, int targetPositionX, int targetPOsitionY )
         {
             index = targetTileIndex;
-            SetTilePostion( targetPosition );
+            SetTilePostion( targetPositionX, targetPOsitionY );
         }
 
         public void SetParent( Tile targetTile )
@@ -73,9 +81,10 @@ namespace BrunoMikoski.Pahtfinding
             parent = targetTile;
         }
 
-        private void SetTilePostion( Vector2Int targetTilePosition )
+        private void SetTilePostion( int targetPositionX, int targetPOsitionY )
         {
-            tilePosition = targetTilePosition;
+            positionX = targetPositionX;
+            positionY = targetPOsitionY;
         }
 
         public void SetGCost( float targetGCost )

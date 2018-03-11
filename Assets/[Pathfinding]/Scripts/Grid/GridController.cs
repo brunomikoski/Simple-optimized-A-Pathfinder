@@ -106,7 +106,7 @@ namespace BrunoMikoski.Pahtfinding.Grid
                 int positionX;
                 int positionY;
                 IndexToTilePos( i, out positionX, out positionY );
-                tiles[i] = new Tile( i, new Vector2Int(positionX, positionY) );
+                tiles[i] = new Tile( i, positionX, positionY );
             }
         }
 

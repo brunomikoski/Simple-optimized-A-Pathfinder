@@ -77,7 +77,7 @@ namespace BrunoMikoski.Pahtfinding
             List<Vector2Int> finalPath = new List<Vector2Int>();
             while ( tile != initialTile )
             {
-                finalPath.Add( tile.TilePosition );
+                finalPath.Add( new Vector2Int( tile.PositionX, tile.PositionY ) );
                 tile = tile.Parent;
             }
 
@@ -91,10 +91,10 @@ namespace BrunoMikoski.Pahtfinding
 
         private static float GetDistance( Tile targetFromTile, Tile targetToTile )
         {
-            return (targetFromTile.TilePosition.x - targetToTile.TilePosition.x) *
-                   (targetFromTile.TilePosition.x - targetToTile.TilePosition.x) +
-                   (targetFromTile.TilePosition.y - targetToTile.TilePosition.y) *
-                   (targetFromTile.TilePosition.y - targetToTile.TilePosition.y);
+            return (targetFromTile.PositionX - targetToTile.PositionY) *
+                   (targetFromTile.PositionX - targetToTile.PositionX) +
+                   (targetFromTile.PositionY - targetToTile.PositionY) *
+                   (targetFromTile.PositionY - targetToTile.PositionY);
         }
 
         private static Tile[] UpdateNeighbors( Tile targetTile )
@@ -109,35 +109,37 @@ namespace BrunoMikoski.Pahtfinding
 
         private static Tile GetNeighborAtDirection( Tile targetTile, NeighborDirection targetDirection )
         {
-            Vector2Int neighborPosition = GetNeighbourPosition( targetTile, targetDirection );
-            if ( !gridController.IsValidTilePosition( neighborPosition ) )
+            int positionX;
+            int positionY;
+
+            GetNeighbourPosition( targetTile, targetDirection, out positionX, out positionY );
+            if ( !gridController.IsValidTilePosition( positionX, positionY ) )
                 return null;
             
-            int neighborIndex = gridController.TilePosToIndex( neighborPosition.x, neighborPosition.y );
+            int neighborIndex = gridController.TilePosToIndex( positionX, positionY );
 
             return gridController.Tiles[neighborIndex];
         }
 
-        private static Vector2Int GetNeighbourPosition( Tile targetTile, NeighborDirection targetDirection )
+        private static void GetNeighbourPosition( Tile targetTile, NeighborDirection targetDirection ,out int targetPositionX, out int targetPositionY)
         {
-            Vector2Int neighbourPosition = targetTile.TilePosition;
+            targetPositionX = targetTile.PositionX;
+            targetPositionY = targetTile.PositionY;
             switch ( targetDirection )
             {
                 case NeighborDirection.LEFT:
-                    neighbourPosition.x -= 1;
+                    targetPositionX -= 1;
                     break;
                 case NeighborDirection.TOP:
-                    neighbourPosition.y += 1;
+                    targetPositionY += 1;
                     break;
                 case NeighborDirection.RIGHT:
-                    neighbourPosition.x += 1;
+                    targetPositionX += 1;
                     break;
                 case NeighborDirection.DOWN:
-                    neighbourPosition.y -= 1;
+                    targetPositionY -= 1;
                     break;
             }
-
-            return neighbourPosition;
         }
     }
 }

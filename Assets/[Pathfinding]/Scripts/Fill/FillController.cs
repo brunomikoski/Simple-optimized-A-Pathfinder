@@ -36,8 +36,8 @@ namespace BrunoMikoski.Pahtfinding.Fill
             for (int i = 0; i < targetGrid.Tiles.Length; i++)
             {
                 Tile tile = targetGrid.Tiles[i];
-                float noise = Mathf.PerlinNoise(((float)(tile.TilePosition.x+randomOffset) / targetGrid.GridSizeX) * mapScale,
-                                                ((float)(tile.TilePosition.y+randomOffset) / targetGrid.GridSizeY) * mapScale);
+                float noise = Mathf.PerlinNoise(((float)(tile.PositionX+randomOffset) / targetGrid.GridSizeX) * mapScale,
+                                                ((float)(tile.PositionY+randomOffset) / targetGrid.GridSizeY) * mapScale);
 
                 if ( noise > mimumValueAsBlock )
                 {

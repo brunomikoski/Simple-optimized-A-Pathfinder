@@ -59,7 +59,7 @@ namespace BrunoMikoski.Pahtfinding.Visualization
             {
                 GameObject tileVisual = SimplePool.Spawn( typesPrefabs[(int) targetTile.TileType], transform );
                 tileVisual.transform.localPosition =
-                    new Vector3( targetTile.TilePosition.x, 0, targetTile.TilePosition.y );
+                    new Vector3( targetTile.PositionX, 0, targetTile.PositionY );
                 tilesGameObjects[targetTile.Index] = tileVisual;
 
                 if ( targetTile.TileType == TileType.ROAD )
@@ -108,7 +108,7 @@ namespace BrunoMikoski.Pahtfinding.Visualization
                     continue;
 
                 GameObject blockTile = SimplePool.Spawn( typesPrefabs[(int) TileType.BLOCK], transform );
-                blockTile.transform.localPosition = new Vector3( gridTile.TilePosition.x, 0, gridTile.TilePosition.y );
+                blockTile.transform.localPosition = new Vector3( gridTile.PositionX, 0, gridTile.PositionY );
 
                 tilesGameObjects[i] = blockTile;
             }
