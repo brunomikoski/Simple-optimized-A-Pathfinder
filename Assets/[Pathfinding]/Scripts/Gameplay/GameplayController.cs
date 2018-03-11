@@ -1,11 +1,14 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
+using System.Runtime.Remoting.Metadata;
 using BrunoMikoski.Camera;
 using BrunoMikoski.Events;
 using BrunoMikoski.Pahtfinding.Fill;
 using BrunoMikoski.Pahtfinding.Grid;
 using BrunoMikoski.Pahtfinding.Visualization;
 using UnityEngine;
+using Debug = UnityEngine.Debug;
 
 namespace BrunoMikoski.Pahtfinding.Gameplay
 {
@@ -23,6 +26,7 @@ namespace BrunoMikoski.Pahtfinding.Gameplay
         private InteractionController interactionController;
 
         private Vector2Int selectedTilePosition;
+        private bool hasFirstNodeSelected = false;
 
         private void Awake()
         {
@@ -49,15 +53,17 @@ namespace BrunoMikoski.Pahtfinding.Gameplay
                 return;
 
 
-            if ( selectedTilePosition == default(Vector2Int) )
+            if ( !hasFirstNodeSelected )
             {
                 selectedTilePosition = clickPosition;
+                hasFirstNodeSelected = true;
                 return;
             }
+            
 
             if ( selectedTilePosition == clickPosition )
             {
-                selectedTilePosition = default(Vector2Int);
+                hasFirstNodeSelected = false;
                 return;
             }
 
@@ -67,7 +73,14 @@ namespace BrunoMikoski.Pahtfinding.Gameplay
                 gridController.SetTileType(vector2Int, TileType.ROAD);
             }
 
-            selectedTilePosition = default(Vector2Int);
+            hasFirstNodeSelected = false;
+        }
+        
+        
+        public void PrintBiggestPath()
+        {
+            OnUserClickOnTilePosition(0, 0);
+            OnUserClickOnTilePosition(gridController.GridSizeX - 1, gridController.GridSizeY - 1);
         }
     }
 }

@@ -33,7 +33,7 @@ namespace BrunoMikoski.Pahtfinding
             while ( openList.Count > 0 )
             {
                 Tile currentTile = openList[0];
-                for ( int i = openList.Count - 1; i >= 1; i-- )
+                for ( int i = 1; i < openList.Count; i++ )
                 {
                     if ( openList[i].FCost < currentTile.FCost ||
                          openList[i].FCost == currentTile.FCost &&
@@ -51,9 +51,8 @@ namespace BrunoMikoski.Pahtfinding
 
                 Tile[] neighbours = GetPathTileNeighbors( currentTile );
 
-                for ( int i = neighbours.Length - 1; i >= 0; i-- )
+                foreach ( Tile neighbourPathTile in neighbours )
                 {
-                    Tile neighbourPathTile = neighbours[i];
                     if ( neighbourPathTile == null )
                         continue;
 
