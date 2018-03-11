@@ -46,7 +46,7 @@ namespace BrunoMikoski.Pahtfinding
                 openList.Remove( currentTile );
                 closedList.Add( currentTile );
 
-                if ( currentTile.TilePosition == destinationTile.TilePosition )
+                if ( currentTile == destinationTile )
                     break;
 
                 Tile[] neighbours = GetPathTileNeighbors( currentTile );
@@ -74,7 +74,7 @@ namespace BrunoMikoski.Pahtfinding
 
             Tile tile = closedList.Last();
             List<Vector2Int> finalPath = new List<Vector2Int>();
-            while ( tile.TilePosition != initialTile.TilePosition )
+            while ( tile != initialTile )
             {
                 finalPath.Add( tile.TilePosition );
                 tile = tile.Parent;
@@ -86,12 +86,11 @@ namespace BrunoMikoski.Pahtfinding
 
         private static bool IsTilePostionAtList( Tile targetTile )
         {
-            foreach ( Tile pathTile in closedList )
+            foreach ( Tile tile in closedList )
             {
-                if ( pathTile.TilePosition == targetTile.TilePosition )
+                if ( tile == targetTile )
                     return true;
             }
-
             return false;
         }
 
@@ -99,7 +98,7 @@ namespace BrunoMikoski.Pahtfinding
         {
             foreach ( Tile pathTile in openList )
             {
-                if ( pathTile.TilePosition == targetTile.TilePosition )
+                if ( pathTile == targetTile )
                     return true;
             }
 
