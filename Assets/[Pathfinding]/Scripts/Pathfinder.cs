@@ -67,6 +67,10 @@ namespace BrunoMikoski.Pahtfinding
                             openListPriorityQueue.Enqueue( neighbourPathTile,
                                                            neighbourPathTile.FCost );
                         }
+                        else
+                        {
+                            openListPriorityQueue.UpdatePriority( neighbourPathTile, neighbourPathTile.FCost );
+                        }
                     }
                 }
             }
