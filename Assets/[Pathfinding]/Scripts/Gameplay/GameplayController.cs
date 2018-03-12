@@ -67,10 +67,12 @@ namespace BrunoMikoski.Pahtfinding.Gameplay
                 return;
             }
 
-            List<Vector2Int> result = Pathfinder.GetPath( selectedTilePosition, clickPosition );
-            foreach ( Vector2Int vector2Int in result )
+            List<Tile> result = Pathfinder.GetPath( selectedTilePosition, clickPosition );
+            int resultCount = result.Count;
+            for ( int i = 0; i < resultCount; ++i )
             {
-                gridController.SetTileType(vector2Int, TileType.ROAD);
+                Tile tile = result[i];
+                tile.SetType( TileType.ROAD );
             }
 
             hasFirstNodeSelected = false;

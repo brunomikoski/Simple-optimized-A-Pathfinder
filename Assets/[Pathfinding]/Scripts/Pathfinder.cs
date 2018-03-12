@@ -14,6 +14,7 @@ namespace BrunoMikoski.Pahtfinding
         private static FastPriorityQueue<Tile> openListPriorityQueue;
         private static HashSet<Tile> closedList = new HashSet<Tile>();
         private static Tile[] neighbors = new Tile[4];
+        private static List<Tile> finalPath = new List<Tile>();
 
         public static void Initialize( GridController targetGridController )
         {
@@ -21,9 +22,8 @@ namespace BrunoMikoski.Pahtfinding
             openListPriorityQueue = new FastPriorityQueue<Tile>( gridController.GridSizeX * gridController.GridSizeY );
         }
 
-        public static List<Vector2Int> GetPath( Vector2Int from, Vector2Int to )
+        public static List<Tile> GetPath( Vector2Int from, Vector2Int to )
         {
-
             int fromIndex = gridController.TilePosToIndex( from.x, from.y );
             int toIndex = gridController.TilePosToIndex( to.x, to.y );
 
@@ -72,10 +72,10 @@ namespace BrunoMikoski.Pahtfinding
                 }
             }
 
-            List<Vector2Int> finalPath = new List<Vector2Int>();
+            finalPath.Clear();
             while ( currentTile  != initialTile )
             {
-                finalPath.Add( new Vector2Int( currentTile.PositionX, currentTile.PositionY ) );
+                finalPath.Add( currentTile );
                 currentTile = currentTile.Parent;
             }
 
@@ -99,14 +99,12 @@ namespace BrunoMikoski.Pahtfinding
                    (fromPositionY - toPositionY);
         }
 
-        private static Tile[] UpdateNeighbors( Tile targetTile )
+        private static void UpdateNeighbors( Tile targetTile )
         {
             neighbors[0] = GetNeighborAtDirection( targetTile, NeighborDirection.LEFT );
             neighbors[1] = GetNeighborAtDirection( targetTile, NeighborDirection.TOP );
             neighbors[2] = GetNeighborAtDirection( targetTile, NeighborDirection.RIGHT );
             neighbors[3] = GetNeighborAtDirection( targetTile, NeighborDirection.DOWN );
-
-            return neighbors;
         }
 
         private static Tile GetNeighborAtDirection( Tile targetTile, NeighborDirection targetDirection )

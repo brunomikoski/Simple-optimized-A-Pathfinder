@@ -137,5 +137,6 @@ namespace BrunoMikoski.Pahtfinding.Grid
             for ( int i = tiles.Length - 1; i >= 0; i-- )
                 SetTileType( i, TileType.EMPTY );
         }
+
     }
 }
