@@ -32,7 +32,6 @@ namespace BrunoMikoski.Pahtfinding
 
             openListPriorityQueue.Enqueue( initialTile, 0 );
 
-
             Tile currentTile = null;
             while ( openListPriorityQueue.Count > 0 )
             {
@@ -73,14 +72,14 @@ namespace BrunoMikoski.Pahtfinding
             }
 
             finalPath.Clear();
-            while ( currentTile  != initialTile )
+            while ( currentTile != initialTile )
             {
                 finalPath.Add( currentTile );
                 currentTile = currentTile.Parent;
             }
 
-            finalPath.Reverse();
-            
+            finalPath.Add( initialTile );
+
             openListPriorityQueue.Clear();
             closedList.Clear();
             return finalPath;

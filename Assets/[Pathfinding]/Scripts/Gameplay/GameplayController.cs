@@ -69,7 +69,7 @@ namespace BrunoMikoski.Pahtfinding.Gameplay
 
             List<Tile> result = Pathfinder.GetPath( selectedTilePosition, clickPosition );
             int resultCount = result.Count;
-            for ( int i = 0; i < resultCount; ++i )
+            for ( int i = resultCount - 1; i >= 0; --i )
             {
                 Tile tile = result[i];
                 tile.SetType( TileType.ROAD );
