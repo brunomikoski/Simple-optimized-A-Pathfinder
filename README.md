@@ -4,7 +4,7 @@
 
 A simple pathfinder that I tryed to optimize the maximum as I can, and share what I've discovered :)
 
-The idea was pretty simple, implement a simple A* Pathfinder and Profile using [Unity Profiler](https://docs.unity3d.com/Manual/Profiler.html) and [my own method](https://github.com/badawe/Simple-optimized-A-Pathfinder/blob/master/Assets/%5BPathfinding%5D/Scripts/Profiler/ProfilerController.cs) to track the average time when running it a 1000 times. 
+The idea was pretty simple, implement a simple A* Pathfinder and use [Unity Profiler](https://docs.unity3d.com/Manual/Profiler.html) to try to optimize the best as I can, trying to reduce the GC and the MS from the method itself
 
 ### Final result:
 
