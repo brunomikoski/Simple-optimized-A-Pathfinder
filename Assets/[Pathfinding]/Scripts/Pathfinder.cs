@@ -12,7 +12,6 @@ namespace BrunoMikoski.Pahtfinding
         private static GridController gridController;
 
         private static FastPriorityQueue<Tile> openListPriorityQueue;
-        private static HashSet<Tile> closedList = new HashSet<Tile>();
         private static Tile[] neighbors = new Tile[4];
         private static List<Tile> finalPath = new List<Tile>();
 
@@ -37,7 +36,7 @@ namespace BrunoMikoski.Pahtfinding
             {
                 currentTile = openListPriorityQueue.Dequeue();
 
-                closedList.Add( currentTile );
+                currentTile.ToggleInCloseList( true );
 
                 if ( currentTile == destinationTile )
                     break;
@@ -50,7 +49,7 @@ namespace BrunoMikoski.Pahtfinding
                     if ( neighbourPathTile == null )
                         continue;
 
-                    if ( closedList.Contains( neighbourPathTile ) )
+                    if ( neighbourPathTile.InCloseList)
                         continue;
 
                     bool isAtOpenList = openListPriorityQueue.Contains( neighbourPathTile );
@@ -76,16 +75,19 @@ namespace BrunoMikoski.Pahtfinding
             }
 
             finalPath.Clear();
-            while ( currentTile != initialTile )
+            while ( currentTile.Parent != null && currentTile != initialTile )
             {
                 finalPath.Add( currentTile );
+                currentTile.ToggleInCloseList( false );
+
+                Tile cachedCurrenTile = currentTile;
                 currentTile = currentTile.Parent;
+                cachedCurrenTile.SetParent( null );
             }
 
             finalPath.Add( initialTile );
 
             openListPriorityQueue.Clear();
-            closedList.Clear();
             return finalPath;
         }
 
