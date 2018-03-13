@@ -16,7 +16,7 @@ The idea was pretty simple, implement a simple A* Pathfinder and use [Unity Prof
 
 |Action|GC |GetPath() MS| GC to original | GC to previous | GetPath() to original | GetPathToPrevious | Commit | 
 |:----:|:----:|:----:|:----:|:----:|:----:|:----:|:----:|
-|Original|40,6 KB| 29,87 ms|  ||||[Commit](https://github.com/badawe/Simple-optimized-A-Pathfinder/commit/4b77634dec8e922f26b224fe5ce90e159ec52c77)|
+|Original|40,6 KB| 29,87 ms|  ||||[Original File](https://github.com/badawe/Simple-optimized-A-Pathfinder/blob/dde01c8d3a9e751197874476b1f812770574d364/Assets/%5BPathfinding%5D/Scripts/Pathfinder.cs)|
 |Step 1|50,3 KB| 20,14 ms| +23,89% |+23,89%|-32,57%|-32,57%|[Commit](https://github.com/badawe/Simple-optimized-A-Pathfinder/commit/63ef36d72ef2b8b833d8b209f65e8ce607fd3889)|
 |Step 2|50,3 KB| 16,95 ms| +23,89% |0%|-43,25%|-15,87%|[Commit](https://github.com/badawe/Simple-optimized-A-Pathfinder/commit/f2c6cb6bc46176e951a5cb66fb85144a8434728a)|
 |Step 3|36,2 KB| 16,92 ms| -10,14% |-28,03%|-43,35%|-0,18%|[Commit](https://github.com/badawe/Simple-optimized-A-Pathfinder/commit/98646c06cb17f7748b66bfac7d12291a76b8eee1)|
