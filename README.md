@@ -27,7 +27,7 @@ The idea was pretty simple, implement a simple A* Pathfinder and use [Unity Prof
 
 ### Performance Comparison
 
-|Action|GC |GetPath() MS| GC to original | GC to previous | GetPath() to original | GetPathToPrevious | Commit | 
+|Action|GC |GetPath() MS| GC to original | GC to previous | GetPath() MS to original | GetPath() MS ToPrevious | Commit | 
 |:----:|:----:|:----:|:----:|:----:|:----:|:----:|:----:|
 |Original|40,6 KB| 29,87 ms|  ||||[Original File](https://github.com/badawe/Simple-optimized-A-Pathfinder/blob/dde01c8d3a9e751197874476b1f812770574d364/Assets/%5BPathfinding%5D/Scripts/Pathfinder.cs)|
 |Step 1|50,3 KB| 20,14 ms| +23,89% |+23,89%|-32,57%|-32,57%|[Commit](https://github.com/badawe/Simple-optimized-A-Pathfinder/commit/63ef36d72ef2b8b833d8b209f65e8ce607fd3889)|
