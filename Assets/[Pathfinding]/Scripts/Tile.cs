@@ -36,13 +36,6 @@ namespace BrunoMikoski.Pahtfinding
         }
 
         private float hCost;
-        public float HCost
-        {
-            get
-            {
-                return hCost;
-            }
-        }
 
         public float FCost
         {
@@ -67,6 +60,15 @@ namespace BrunoMikoski.Pahtfinding
             get
             {
                 return index;
+            }
+        }
+
+        private bool inCloseList;
+        public bool InCloseList
+        {
+            get
+            {
+                return inCloseList;
             }
         }
 
@@ -104,6 +106,11 @@ namespace BrunoMikoski.Pahtfinding
             
             tileType = targetType;
             Events.EventsDispatcher.Grid.DispatchOnTileTypeChangedEvent( this);
+        }
+
+        public void ToggleInCloseList( bool on )
+        {
+            inCloseList = on;
         }
     }
 }
