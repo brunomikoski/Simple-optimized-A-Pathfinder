@@ -1,4 +1,5 @@
-[logo]: https://thumbs.gfycat.com/FrigidFearfulDrake-size_restricted.gif "Final road creation result"
+[example]: https://thumbs.gfycat.com/FrigidFearfulDrake-size_restricted.gif "Final road creation result"
+[profiler]:https://i.imgur.com/lqf6ofr.png
 
 # Simple-optimized-A-Pathfinder
 
@@ -8,7 +9,7 @@ The idea was pretty simple, implement a simple A* Pathfinder and use [Unity Prof
 
 ### Final result:
 
-![alt text][logo]
+![alt text][example]
 
 
 ### Performance Comparison
@@ -43,3 +44,7 @@ The idea was pretty simple, implement a simple A* Pathfinder and use [Unity Prof
 * Step 10 - Removing the reverse method from the GetPath
 * Step 11 - Removing closedList and ussing a Toggle inside the Tile itself
 * Step 12 - Increasing return list size to be 20% of the available tiles on the map
+  
+  
+
+![profiler]
