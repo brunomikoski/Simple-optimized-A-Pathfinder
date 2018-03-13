@@ -11,6 +11,19 @@ The idea was pretty simple, implement a simple A* Pathfinder and use [Unity Prof
 
 ![alt text][example]
 
+#### Steps Descriptions
+* Step 1 - Dictionary used as quick acess to to check if a tile is inside OpenList
+* Step 2 - Caching index when comparing best tile from open list, and using it to remove it from list
+* Step 3 - Static neighbours array
+* Step 4 - Add FastPriorityQueue as OpenList
+* Step 5 - Replacing Vector2Int to int for X and Y position
+* Step 6 - Using reversed for instead of foreach on the neighbours array
+* Step 7 - Removing Dictionary for open list, since FastQueue its doing the same
+* Step 8 - Change return List to be List<Tile> from Tile<Vector2Int>
+* Step 9 - Using only F cost when adding to priority queue
+* Step 10 - Removing the reverse method from the GetPath
+* Step 11 - Removing closedList and ussing a Toggle inside the Tile itself
+* Step 12 - Increasing return list size to be 20% of the available tiles on the map
 
 ### Performance Comparison
 
@@ -31,19 +44,7 @@ The idea was pretty simple, implement a simple A* Pathfinder and use [Unity Prof
 |Step 12|0 KB| 4,82 ms| -100% |-100%|-83,86%|-26,86%|[Commit](https://github.com/badawe/Simple-optimized-A-Pathfinder/commit/a2f9ab2965185d75f0c903f5f9ef5aa37be88a97)|
 
 
-#### Steps Descriptions
-* Step 1 - Dictionary used as quick acess to to check if a tile is inside OpenList
-* Step 2 - Caching index when comparing best tile from open list, and using it to remove it from list
-* Step 3 - Static neighbours array
-* Step 4 - Add FastPriorityQueue as OpenList
-* Step 5 - Replacing Vector2Int to int for X and Y position
-* Step 6 - Using reversed for instead of foreach on the neighbours array
-* Step 7 - Removing Dictionary for open list, since FastQueue its doing the same
-* Step 8 - Change return List to be List<Tile> from Tile<Vector2Int>
-* Step 9 - Using only F cost when adding to priority queue
-* Step 10 - Removing the reverse method from the GetPath
-* Step 11 - Removing closedList and ussing a Toggle inside the Tile itself
-* Step 12 - Increasing return list size to be 20% of the available tiles on the map
+
   
   
 
