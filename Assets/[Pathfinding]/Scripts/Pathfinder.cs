@@ -13,12 +13,13 @@ namespace BrunoMikoski.Pahtfinding
 
         private static FastPriorityQueue<Tile> openListPriorityQueue;
         private static Tile[] neighbors = new Tile[4];
-        private static List<Tile> finalPath = new List<Tile>();
+        private static List<Tile> finalPath;
 
         public static void Initialize( GridController targetGridController )
         {
             gridController = targetGridController;
             openListPriorityQueue = new FastPriorityQueue<Tile>( gridController.GridSizeX * gridController.GridSizeY );
+            finalPath = new List<Tile>( Mathf.RoundToInt( gridController.Tiles.Length * 0.1f ) );
         }
 
         public static List<Tile> GetPath( Vector2Int from, Vector2Int to )

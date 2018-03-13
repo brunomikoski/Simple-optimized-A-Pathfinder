@@ -66,6 +66,7 @@ namespace BrunoMikoski.Pahtfinding.Visualization
                 {
                     tileVisual.transform.localPosition =
                         new Vector3( tileVisual.transform.localPosition.x, -5, tileVisual.transform.localPosition.z );
+                    
                     tileVisual.transform.DOLocalMoveY( 0, 0.3f )
                               .SetEase( Ease.OutBack )
                               .SetDelay( count * 0.05f )
