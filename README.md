@@ -41,7 +41,7 @@ The idea was pretty simple, implement a simple A* Pathfinder and use [Unity Prof
 |Step 9|12,6 KB| 7,46 ms| -68,97% |**-42,99%**|-75,03%|0%|[Commit](https://github.com/badawe/Simple-optimized-A-Pathfinder/commit/2c57ba982181c091b1dedb213e58d83f3b9ede48)|
 |Step 10|12,6 KB| 7,32 ms| -68,97% |0%|-75,49%|-1,88%|[Commit](https://github.com/badawe/Simple-optimized-A-Pathfinder/commit/78ffb6e8a08db978f8a8e43b6e52f93b17b40d5d)|
 |Step 11|4,2 KB| 6,59 ms| -89,66% |-66,67%|-77,94%|-9,97%|[Commit](https://github.com/badawe/Simple-optimized-A-Pathfinder/commit/a2f9ab2965185d75f0c903f5f9ef5aa37be88a97)|
-|Step 12|0 KB| 4,82 ms| -100% |-100%|**-83,86%**|**-26,86%**|[Commit](https://github.com/badawe/Simple-optimized-A-Pathfinder/commit/a2f9ab2965185d75f0c903f5f9ef5aa37be88a97)|
+|Step 12|0 KB| 4,82 ms| **-100%** |-100%|**-83,86%**|-26,86%|[Commit](https://github.com/badawe/Simple-optimized-A-Pathfinder/commit/a2f9ab2965185d75f0c903f5f9ef5aa37be88a97)|
 
 
 
