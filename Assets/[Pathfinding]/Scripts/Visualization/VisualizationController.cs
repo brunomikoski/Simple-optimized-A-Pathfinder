@@ -2,7 +2,6 @@
 using BrunoMikoski.Events;
 using BrunoMikoski.Pahtfinding.Grid;
 using DG.Tweening;
-using Pooling;
 using UnityEngine;
 
 namespace BrunoMikoski.Pahtfinding.Visualization
@@ -57,7 +56,7 @@ namespace BrunoMikoski.Pahtfinding.Visualization
             }
             else
             {
-                GameObject tileVisual = SimplePool.Spawn( typesPrefabs[(int) targetTile.TileType], transform );
+                GameObject tileVisual = SimplePool.Spawn( typesPrefabs[(int) targetTile.TileType].gameObject, transform );
                 tileVisual.transform.localPosition =
                     new Vector3( targetTile.PositionX, 0, targetTile.PositionY );
                 tilesGameObjects[targetTile.Index] = tileVisual;
@@ -127,10 +126,10 @@ namespace BrunoMikoski.Pahtfinding.Visualization
                 if ( typesPrefab == null )
                     continue;
 
-                SimplePool.AddObjectsToPool( typesPrefab, maxTypesAmount );
+                SimplePool.Preload( typesPrefab, maxTypesAmount );
             }
 
-            SimplePool.AddObjectsToPool( typesPrefabs[(int) TileType.BLOCK], maxBlocksAmount );
+            SimplePool.Preload( typesPrefabs[(int) TileType.BLOCK], maxBlocksAmount );
         }
 
         public void ToggleObjectCreationg( bool shouldCreate )

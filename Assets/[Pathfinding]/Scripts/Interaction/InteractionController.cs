@@ -9,6 +9,7 @@ namespace BrunoMikoski.Pahtfinding
         private CameraController cameraController;
         private bool initialized;
 
+        
         public void Initialize( CameraController targetCameraController )
         {
             cameraController = targetCameraController;
