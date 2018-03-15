@@ -26,6 +26,7 @@ The idea was pretty simple, implement a simple A* Pathfinder and use [Unity Prof
 * Step 12 - Increasing return list size to be 20% of the available tiles on the map
 
 ### Performance Comparison
+>Keep in mind that all the results bellow are made inside Unity Deep Profiler, so the real performance its probably better than this, I'm working on the profiler for real builds
 
 |Action|GC |GetPath() MS| GC to original | GC to previous | GetPath() MS to original | GetPath() MS ToPrevious | Commit | 
 |:----:|:----:|:----:|:----:|:----:|:----:|:----:|:----:|
