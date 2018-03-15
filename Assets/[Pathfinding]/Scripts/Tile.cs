@@ -63,15 +63,6 @@ namespace BrunoMikoski.Pahtfinding
             }
         }
 
-        private bool inCloseList;
-        public bool InCloseList
-        {
-            get
-            {
-                return inCloseList;
-            }
-        }
-
         public Tile( int targetTileIndex, int targetPositionX, int targetPOsitionY )
         {
             index = targetTileIndex;
@@ -108,9 +99,13 @@ namespace BrunoMikoski.Pahtfinding
             Events.EventsDispatcher.Grid.DispatchOnTileTypeChangedEvent( this);
         }
 
-        public void ToggleInCloseList( bool on )
+        public override bool Equals( object obj )
         {
-            inCloseList = on;
+            Tile otherTile = obj as Tile;
+            if ( otherTile == null )
+                return false;
+
+            return Index == otherTile.Index;
         }
     }
 }

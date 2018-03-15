@@ -14,16 +14,20 @@ namespace BrunoMikoski.Pahtfinding
         private static FastPriorityQueue<Tile> openListPriorityQueue;
         private static Tile[] neighbors = new Tile[4];
         private static List<Tile> finalPath;
+        private static Dictionary<int, Tile> closeDictionary;
 
         public static void Initialize( GridController targetGridController )
         {
             gridController = targetGridController;
             openListPriorityQueue = new FastPriorityQueue<Tile>( gridController.GridSizeX * gridController.GridSizeY );
             finalPath = new List<Tile>( Mathf.RoundToInt( gridController.Tiles.Length * 0.1f ) );
+            closeDictionary = new Dictionary<int, Tile>( Mathf.RoundToInt( gridController.Tiles.Length * 0.1f ) );
         }
 
         public static List<Tile> GetPath( Vector2Int from, Vector2Int to )
         {
+            finalPath.Clear();
+
             int fromIndex = gridController.TilePosToIndex( from.x, from.y );
             int toIndex = gridController.TilePosToIndex( to.x, to.y );
 
@@ -37,9 +41,9 @@ namespace BrunoMikoski.Pahtfinding
             {
                 currentTile = openListPriorityQueue.Dequeue();
 
-                currentTile.ToggleInCloseList( true );
+                closeDictionary.Add( currentTile.Index, currentTile );
 
-                if ( currentTile == destinationTile )
+                if ( Equals( currentTile, destinationTile ) )
                     break;
 
                 UpdateNeighbors( currentTile );
@@ -50,7 +54,7 @@ namespace BrunoMikoski.Pahtfinding
                     if ( neighbourPathTile == null )
                         continue;
 
-                    if ( neighbourPathTile.InCloseList)
+                    if(closeDictionary.ContainsKey( neighbourPathTile.Index ))
                         continue;
 
                     bool isAtOpenList = openListPriorityQueue.Contains( neighbourPathTile );
@@ -75,20 +79,18 @@ namespace BrunoMikoski.Pahtfinding
                 }
             }
 
-            finalPath.Clear();
-            while ( currentTile.Parent != null && currentTile != initialTile )
+            while ( currentTile.Parent != null && !Equals( currentTile, initialTile ) )
             {
                 finalPath.Add( currentTile );
-                currentTile.ToggleInCloseList( false );
 
-                Tile cachedCurrenTile = currentTile;
                 currentTile = currentTile.Parent;
-                cachedCurrenTile.SetParent( null );
+                
             }
 
             finalPath.Add( initialTile );
 
             openListPriorityQueue.Clear();
+            closeDictionary.Clear();
             return finalPath;
         }
 
@@ -124,7 +126,8 @@ namespace BrunoMikoski.Pahtfinding
             
             int neighborIndex = gridController.TilePosToIndex( positionX, positionY );
 
-            return gridController.Tiles[neighborIndex];
+            Tile neighborAtDirection = gridController.Tiles[neighborIndex];
+            return neighborAtDirection;
         }
 
         private static void GetNeighbourPosition( Tile targetTile, NeighborDirection targetDirection ,out int targetPositionX, out int targetPositionY)
