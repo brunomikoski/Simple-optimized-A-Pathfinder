@@ -3,6 +3,8 @@
 
 # Simple-optimized-A-Pathfinder
 
+[![License: MIT](https://img.shields.io/badge/License-MIT-brightgreen.svg)](https://github.com/badawe/Simple-optimized-A-Pathfinder/blob/master/LICENSE)
+
 A simple pathfinder that I tried to optimize the maximum as I can, and share what I've discovered :)
 
 The idea was pretty simple, implement a simple A* Pathfinder and use [Unity Profiler](https://docs.unity3d.com/Manual/Profiler.html) to try to optimize the best as I can, trying to reduce the GC and the MS from the method itself
