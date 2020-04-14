@@ -1,5 +1,6 @@
 [example]: https://thumbs.gfycat.com/FrigidFearfulDrake-size_restricted.gif "Final road creation result"
 [profiler]:https://i.imgur.com/lqf6ofr.png
+![](https://img.shields.io/github/followers/badawe?label=Follow&style=social) ![](https://img.shields.io/twitter/follow/brunomikoski?style=social)
 
 # Simple-optimized-A-Pathfinder
 
