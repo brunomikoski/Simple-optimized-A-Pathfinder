@@ -1,10 +1,10 @@
 [example]: https://thumbs.gfycat.com/FrigidFearfulDrake-size_restricted.gif "Final road creation result"
 [profiler]:https://i.imgur.com/lqf6ofr.png
-![](https://img.shields.io/github/followers/badawe?label=Follow&style=social) ![](https://img.shields.io/twitter/follow/brunomikoski?style=social)
 
 # Simple-optimized-A-Pathfinder
 
 [![License: MIT](https://img.shields.io/badge/License-MIT-brightgreen.svg)](https://github.com/badawe/Simple-optimized-A-Pathfinder/blob/master/LICENSE)
+![](https://img.shields.io/github/followers/badawe?label=Follow&style=social) ![](https://img.shields.io/twitter/follow/brunomikoski?style=social)
 
 A simple pathfinder that I tried to optimize the maximum as I can, and share what I've discovered :)
 
