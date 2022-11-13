@@ -70,7 +70,7 @@ namespace BrunoMikoski.Pathfinder
         private List<PathQueryJob> runningJobs;
         
         private NativeArray<int2> NEIGHBOURS_OFFSET;
-        private Queue<PathNode[]> gridNodesPool;
+        private Queue<NativeArray<PathNode>> gridNodesPool;
         private NativeList<int> queryIDs;
 
 
@@ -107,7 +107,7 @@ namespace BrunoMikoski.Pathfinder
             
             runningQueriesJobHandle = new List<JobHandle>(MAXIMUM_SIMULTANEOUS_QUERY);
             runningJobs = new List<PathQueryJob>(MAXIMUM_SIMULTANEOUS_QUERY);
-            gridNodesPool = new Queue<PathNode[]>(MAXIMUM_SIMULTANEOUS_QUERY);
+            gridNodesPool = new Queue<NativeArray<PathNode>>(MAXIMUM_SIMULTANEOUS_QUERY);
             queryIDs = new NativeList<int>(MAXIMUM_SIMULTANEOUS_QUERY, Allocator.Persistent);
             NEIGHBOURS_OFFSET = new NativeArray<int2>(4, Allocator.Persistent)
             {
@@ -214,7 +214,7 @@ namespace BrunoMikoski.Pathfinder
         {
             for (int i = 0; i < MAXIMUM_SIMULTANEOUS_QUERY; i++)
             {
-                PathNode[] gridNodes = new PathNode[gridSize.x * gridSize.y];
+                NativeArray<PathNode> gridNodes = new NativeArray<PathNode>(gridSize.x * gridSize.y,Allocator.Persistent);
 
                 for (int x = 0; x < gridSize.x; x++)
                 {
